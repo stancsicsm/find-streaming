@@ -17,6 +17,7 @@ const queryMovies = (params?: string[]): Promise<Movie[]> => {
     .then((response) => response.json())
     .then((response) => response as Movies)
     .then((response) => response.results)
+    .then((response) => response.slice(0, 5) as Movie[])
     .catch((err) => {
       console.error(err);
       return [] as Movie[];

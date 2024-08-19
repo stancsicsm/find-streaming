@@ -7,24 +7,26 @@ interface MoviesTableProps {
 
 const MoviesTable: React.FC<MoviesTableProps> = ({ movies }) => {
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Year</th>
-          <th>Rating</th>
-        </tr>
-      </thead>
-      <tbody>
-        {movies.map((movie) => (
-          <tr key={movie.id}>
-            <td>{movie.title}</td>
-            <td>{movie.release_date}</td>
-            <td>{movie.vote_average}</td>
+    <div className="table-responsive">
+      <table className="table table-striped">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Year</th>
+            <th>Rating</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {movies.map((movie) => (
+            <tr key={movie.id}>
+              <td>{movie.title}</td>
+              <td>{movie.release_date}</td>
+              <td>{movie.vote_average}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };
 
