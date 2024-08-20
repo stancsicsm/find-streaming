@@ -8,10 +8,16 @@ const options = {
   },
 };
 
-const queryMovies = (params?: string[]): Promise<Movie[]> => {
-  const baseUrl = "https://api.themoviedb.org/3/discover/movie?";
-  const queryParams =
-    "include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc";
+const queryMovies = (
+  filterParams: Map<string, string | number> = new Map()
+): Promise<Movie[]> => {
+  const baseUrl =
+    "https://api.themoviedb.org/3/discover/movie?include_adult=false";
+
+  let queryParams = "";
+  for (const [key, value] of filterParams.entries()) {
+    queryParams += `&${key}=${value}`;
+  }
 
   return fetch(baseUrl + queryParams, options)
     .then((response) => response.json())
