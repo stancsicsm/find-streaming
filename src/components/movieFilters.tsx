@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import queryGenres from "../api/queryGenres";
 import { Genre } from "../interfaces/genreInterface";
 
@@ -12,11 +12,16 @@ const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams }) => {
   const [genreOptions, setGenreOptions] = useState<Genre[]>([]);
   const [genre, setGenre] = useState<string>("");
 
+  const isMounted = useRef(false);
+
   useEffect(() => {
-    setPrimaryReleaseYear(
-      (filterParams.get("primary_release_year") as string) || ""
-    );
-    setGenre((filterParams.get("genre") as string) || "");
+    if (!isMounted.current) {
+      setPrimaryReleaseYear(
+        (filterParams.get("primary_release_year") as string) || ""
+      );
+      setGenre((filterParams.get("with_genres") as string) || "");
+      isMounted.current = true;
+    }
   }, [filterParams]);
 
   useEffect(() => {
@@ -49,8 +54,6 @@ const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams }) => {
     }
     if (genre) {
       filters.set("with_genres", genre);
-    } else if (genre === "") {
-      filters.delete("with_genres");
     } else {
       filters.delete("with_genres");
     }
@@ -70,7 +73,7 @@ const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams }) => {
       <label>
         Genre:
         <select value={genre} onChange={handleGenreChange}>
-          <option key={-1} value={""}>
+          <option key={-1} value="">
             All
           </option>
           {genreOptions.map((g) => (
