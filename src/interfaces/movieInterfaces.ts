@@ -6,6 +6,11 @@ interface Movie {
   release_date: string;
   genre_ids: number[];
   backdrop_path: string;
+  providers?: {
+    logo_path: string;
+    provider_id: number;
+    provider_name: string;
+  }[];
 }
 
 interface Movies {

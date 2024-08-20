@@ -14,6 +14,7 @@ const MoviesTable: React.FC<MoviesTableProps> = ({ movies }) => {
             <th>Title</th>
             <th>Year</th>
             <th>Rating</th>
+            <th>Streaming</th>
           </tr>
         </thead>
         <tbody>
@@ -22,6 +23,11 @@ const MoviesTable: React.FC<MoviesTableProps> = ({ movies }) => {
               <td>{movie.title}</td>
               <td>{movie.release_date}</td>
               <td>{movie.vote_average}</td>
+              <td>
+                {movie.providers
+                  ? movie.providers.map((p) => p.provider_name).join(", ")
+                  : "No"}
+              </td>
             </tr>
           ))}
         </tbody>
