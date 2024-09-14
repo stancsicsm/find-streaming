@@ -4,6 +4,7 @@ import queryProviders from "./api/queryProviders";
 import { Movie } from "./interfaces/movieInterfaces";
 import MoviesTable from "./components/moviesTable";
 import Filter from "./components/movieFilters";
+import {ProvidersResponse, Provider} from "./interfaces/providerInterfaces";
 
 const App: React.FC = () => {
   const [streamableMovies, setStreamableMovies] = useState<Movie[]>([]);
@@ -14,30 +15,18 @@ const App: React.FC = () => {
   useEffect(() => {
     queryMovies(filterParams)
       .then((movies) => {
-        return movies;
-      })
-      .then((movies) => {
         const providerPromises = movies.map((movie) =>
           queryProviders(movie.id)
         );
 
         Promise.all(providerPromises)
-          .then((providersArray) => {
+          .then((providersArray: ProvidersResponse[]) => {
             const moviesWithProviders: Movie[] = movies.map((movie, index) => {
               const providers = providersArray[index];
-              let providersHU = null;
-              if (
-                providers.results &&
-                providers.results.HU &&
-                providers.results.HU.flatrate
-              ) {
-                providersHU = providers.results.HU.flatrate;
-              }
-              return { ...movie, providers: providersHU };
+              const providersHU: Provider[] = providers.results?.HU?.flatrate || [];
+                return { ...movie, providers: providersHU };
             });
-            const streamable: Movie[] = moviesWithProviders.filter((movie) => {
-              return movie.providers;
-            });
+            const streamable: Movie[] = moviesWithProviders.filter((movie) => movie.providers.length);
             setStreamableMovies(streamable);
           })
           .catch((error) => {

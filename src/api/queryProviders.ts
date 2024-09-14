@@ -1,4 +1,4 @@
-import { Provider } from "../interfaces/providerInterfaces";
+import { ProvidersResponse } from "../interfaces/providerInterfaces";
 
 const options = {
   method: "GET",
@@ -8,19 +8,18 @@ const options = {
   },
 };
 
-const queryProviders = (movie_id: number): Promise<Provider> => {
+const queryProviders = (movie_id: number): Promise<ProvidersResponse> => {
   return fetch(
     `https://api.themoviedb.org/3/movie/${movie_id}/watch/providers`,
     options
   )
     .then((response) => response.json())
-    .then((response) => response as Provider)
+    .then((response) => response as ProvidersResponse)
     .catch((err) => {
-      const emptyResponse: Provider = {
+      const emptyResponse: ProvidersResponse = {
         id: 0,
-        results: null,
+        results: {},
       };
-
       console.error(err);
       return emptyResponse;
     });
