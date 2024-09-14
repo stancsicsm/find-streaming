@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Form, Button, Row, Col } from 'react-bootstrap';
 import queryGenres from "../api/queryGenres";
 import { Genre } from "../interfaces/genreInterface";
 
@@ -61,30 +62,49 @@ const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams }) => {
   };
 
   return (
-    <div>
-      <label>
-        Release Year:
-        <input
-          type="text"
-          value={primaryReleaseYear}
-          onChange={handleYearChange}
-        />
-      </label>
-      <label>
-        Genre:
-        <select value={genre} onChange={handleGenreChange}>
-          <option key={-1} value="">
-            All
-          </option>
-          {genreOptions.map((g) => (
-            <option key={g.id} value={g.id}>
-              {g.name}
+    <Form>
+      <Row>
+        <Col md="4">
+          <Form.Control
+            type="number"
+            placeholder="Release Year"
+            value={primaryReleaseYear}
+            onChange={handleYearChange}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                applyFilters();
+              }
+            }}
+          />
+        </Col>
+        <Col md="4">
+          <Form.Select
+            value={genre}
+            onChange={handleGenreChange}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                event.preventDefault();
+                applyFilters();
+              }
+            }}
+          >
+            <option key={-1} value="">
+              All
             </option>
-          ))}
-        </select>
-      </label>
-      <button onClick={applyFilters}>Apply Filters</button>
-    </div>
+            {genreOptions.map((g) => (
+              <option key={g.id} value={g.id}>
+                {g.name}
+              </option>
+            ))}
+          </Form.Select>
+        </Col>
+        <Col md="4">
+          <Button variant="primary" onClick={applyFilters}>
+            Apply Filters
+          </Button>
+        </Col>
+      </Row>
+    </Form>
   );
 };
 

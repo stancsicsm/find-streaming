@@ -5,6 +5,7 @@ import { Movie } from "./interfaces/movieInterfaces";
 import MoviesTable from "./components/moviesTable";
 import Filter from "./components/movieFilters";
 import {ProvidersResponse, Provider} from "./interfaces/providerInterfaces";
+import { Container, Row, Col } from 'react-bootstrap';
 
 const App: React.FC = () => {
   const [streamableMovies, setStreamableMovies] = useState<Movie[]>([]);
@@ -39,11 +40,23 @@ const App: React.FC = () => {
   }, [filterParams]);
 
   return (
-    <div className="container">
-      <h1>Pick Me a Movie</h1>
-      <Filter filterParams={filterParams} setFilterParams={setFilterParams} />
-      <MoviesTable movies={streamableMovies} />
-    </div>
+      <Container>
+        <Row className="justify-content-md-center mb-3">
+          <Col md="8">
+            <h1 >Pick Me a Movie</h1>
+          </Col>
+        </Row>
+        <Row className="justify-content-md-center mb-3">
+          <Col md="8">
+            <Filter filterParams={filterParams} setFilterParams={setFilterParams} />
+          </Col>
+        </Row>
+        <Row className="justify-content-md-center">
+          <Col md="8">
+            <MoviesTable movies={streamableMovies} />
+          </Col>
+        </Row>
+      </Container>
   );
 };
 
