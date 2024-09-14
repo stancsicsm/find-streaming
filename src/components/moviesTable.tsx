@@ -46,7 +46,7 @@ const MoviesTable: React.FC<MoviesTableProps> = ({ movies, isLoading }) => {
                   {movie?.providers?.map((provider) => (
                     <img
                       key={provider.logo_path}
-                      alt="provider"
+                      alt={provider.provider_name}
                       className="provider-logo me-2 rounded-circle"
                       src={`https://image.tmdb.org/t/p/original${provider.logo_path}`}
                       width={30}
