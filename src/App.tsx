@@ -12,8 +12,10 @@ const App: React.FC = () => {
   const [filterParams, setFilterParams] = useState<
     Map<string, string | number>
   >(new Map());
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     queryMovies(filterParams)
       .then((movies) => {
         const providerPromises = movies.map((movie) =>
@@ -29,6 +31,7 @@ const App: React.FC = () => {
             });
             const streamable: Movie[] = moviesWithProviders.filter((movie) => movie.providers.length);
             setStreamableMovies(streamable);
+            setIsLoading(false);
           })
           .catch((error) => {
             console.error("Error fetching providers:", error);
@@ -53,7 +56,7 @@ const App: React.FC = () => {
         </Row>
         <Row className="justify-content-md-center">
           <Col md="8">
-            <MoviesTable movies={streamableMovies} />
+            <MoviesTable movies={streamableMovies} isLoading={isLoading} />
           </Col>
         </Row>
       </Container>
