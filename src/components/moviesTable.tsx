@@ -19,16 +19,23 @@ const MoviesTable: React.FC<MoviesTableProps> = ({ movies }) => {
         </thead>
         <tbody>
           {movies.map((movie) => (
-            <tr key={movie.id}>
-              <td>{movie.title}</td>
-              <td>{movie.release_date}</td>
-              <td>{movie.vote_average}</td>
-              <td>
-                {movie.providers
-                  ? movie.providers.map((p) => p.provider_name).join(", ")
-                  : "No"}
-              </td>
-            </tr>
+              <tr key={movie.id}>
+                <td>{movie.title}</td>
+                <td>{movie.release_date}</td>
+                <td>{movie.vote_average}</td>
+                <td>
+                  {movie?.providers?.map((provider) => (
+                      <img
+                          key={provider.logo_path}
+                          alt="provider"
+                          className="provider-logo me-2 rounded-circle"
+                          src={`https://image.tmdb.org/t/p/original${provider.logo_path}`}
+                          width={30}
+                          height={30}
+                      />
+                  )) ?? null}
+                </td>
+              </tr>
           ))}
         </tbody>
       </table>
