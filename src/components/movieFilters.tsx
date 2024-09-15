@@ -12,6 +12,7 @@ const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams }) => {
   const [primaryReleaseYear, setPrimaryReleaseYear] = useState<string>("");
   const [genreOptions, setGenreOptions] = useState<Genre[]>([]);
   const [genre, setGenre] = useState<string>("");
+  const [page, setPage] = useState<number>(1);
 
   const isMounted = useRef(false);
 
@@ -46,6 +47,28 @@ const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams }) => {
     setGenre(event.target.value);
   };
 
+  const updatePageInFilters = (newPage: number) => {
+    const filters = new Map<string, string | number>(filterParams);
+    filters.set("page", newPage);
+    setFilterParams(filters);
+  };
+
+  const previousPage = () => {
+    setPage((prevPage) => {
+      const newPage = prevPage > 1 ? prevPage - 1 : prevPage;
+      updatePageInFilters(newPage);
+      return newPage;
+    });
+  };
+
+  const nextPage = () => {
+    setPage((prevPage) => {
+      const newPage = prevPage + 1;
+      updatePageInFilters(newPage);
+      return newPage;
+    });
+  };
+
   const applyFilters = () => {
     const filters = new Map<string, string | number>(filterParams);
     if (primaryReleaseYear) {
@@ -58,6 +81,7 @@ const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams }) => {
     } else {
       filters.delete("with_genres");
     }
+    filters.set("page", page);
     setFilterParams(filters);
   };
 
@@ -99,9 +123,26 @@ const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams }) => {
             ))}
           </Form.Select>
         </Col>
-        <Col md="4">
+        <Col md="2">
           <Button variant="primary" onClick={applyFilters}>
-            Apply Filters
+            Search
+          </Button>
+        </Col>
+        <Col md="1">
+          <Button
+            variant={`secondary ${page === 1 ? "disabled" : ""}`}
+            onClick={previousPage}
+            disabled={page === 1}
+          >
+            &lt;
+          </Button>
+        </Col>
+        <Col md="1">
+          <Button
+            variant={`secondary ${page === 1 ? "disabled" : ""}`}
+            onClick={nextPage}
+          >
+            &gt;
           </Button>
         </Col>
       </Row>
