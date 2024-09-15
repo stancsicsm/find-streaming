@@ -42,7 +42,9 @@ const App: React.FC = () => {
                     .map((trailer) => trailer.key)[0];
                   return {...movie, providers: providersHU, trailerKey: trailerKey };
                 });
-                const streamable: Movie[] = moviesWithProvidersAndTrailers.filter((movie) => movie.providers.length);
+                const streamable: Movie[] = moviesWithProvidersAndTrailers
+                  .filter((movie) => movie.providers.length)
+                  .sort((a, b) => b.vote_average - a.vote_average);
                 setStreamableMovies(streamable);
                 setIsLoading(false);
               })
