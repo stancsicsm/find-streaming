@@ -143,6 +143,23 @@ const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams, totalPag
             </Form.Select>
           </InputGroup>
         </Col>
+      </Row>
+      <Row>
+        <Col md="8" className="mb-2 mb-md-0">
+          <Form.Control
+            className="rounded-pill"
+            type="text"
+            placeholder="Movie Title"
+            value={filterParams.get("movie_title") as string}
+            onChange={handleMovieTitleSearchChange}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                event.preventDefault();
+                applyFilters();
+              }
+            }}
+          />
+        </Col>
         <Col md="4" className="d-flex justify-content-end">
           <ButtonGroup>
             <Button className="rounded-pill me-2" variant="outline-primary" onClick={applyFilters}>
@@ -164,23 +181,6 @@ const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams, totalPag
               &gt;
             </Button>
           </ButtonGroup>
-        </Col>
-      </Row>
-      <Row>
-        <Col md="8">
-          <Form.Control
-            className="rounded-pill"
-            type="text"
-            placeholder="Movie Title"
-            value={filterParams.get("movie_title") as string}
-            onChange={handleMovieTitleSearchChange}
-            onKeyDown={(event) => {
-              if (event.key === "Enter") {
-                event.preventDefault();
-                applyFilters();
-              }
-            }}
-          />
         </Col>
       </Row>
     </Form>
