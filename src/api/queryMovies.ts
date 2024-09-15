@@ -12,7 +12,7 @@ const queryMovies = (
   filterParams: Map<string, string | number> = new Map()
 ): Promise<Movie[]> => {
   const baseUrl =
-    "https://api.themoviedb.org/3/discover/movie?include_adult=false";
+    "https://api.themoviedb.org/3/discover/movie?include_adult=false&sort_by=popularity.desc";
 
   let queryParams = "";
   for (const [key, value] of filterParams.entries()) {
