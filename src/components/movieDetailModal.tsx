@@ -42,6 +42,20 @@ const MovieDetailModal: React.FC<MovieDetailModalProps> = ({ show, handleClose, 
               {provider.provider_name}
             </p>
           ))}
+        {movie.trailerKey && (
+          <>
+            <h5>Trailer</h5>
+            <iframe
+              key={movie.trailerKey}
+              width="100%"
+              height="250"
+              src={`https://www.youtube.com/embed/${movie.trailerKey}`}
+              title={movie.title}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </>
+        )}
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>

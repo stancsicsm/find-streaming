@@ -1,4 +1,5 @@
 import {Provider} from "./providerInterfaces";
+import {Trailer} from "./trailerInterface";
 
 interface Movie {
   id: number;
@@ -9,6 +10,7 @@ interface Movie {
   genre_ids: number[];
   backdrop_path: string;
   providers: Provider[];
+  trailerKey?: string;
 }
 
 interface Movies {

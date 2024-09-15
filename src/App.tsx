@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import queryMovies from "./api/queryMovies";
 import queryProviders from "./api/queryProviders";
+import queryTrailers from "./api/queryTrailers";
 import { Movie } from "./interfaces/movieInterfaces";
 import MoviesTable from "./components/moviesTable";
 import Filter from "./components/movieFilters";
-import {ProvidersResponse, Provider} from "./interfaces/providerInterfaces";
+import { ProvidersResponse, Provider } from "./interfaces/providerInterfaces";
+import { TrailerResponse, Trailer } from "./interfaces/trailerInterface"
 import { Container, Row, Col } from 'react-bootstrap';
 
 const App: React.FC = () => {
@@ -21,17 +23,32 @@ const App: React.FC = () => {
         const providerPromises = movies.map((movie) =>
           queryProviders(movie.id)
         );
+        const trailerPromises = movies.map((movie) =>
+          queryTrailers(movie.id)
+        );
 
         Promise.all(providerPromises)
           .then((providersArray: ProvidersResponse[]) => {
-            const moviesWithProviders: Movie[] = movies.map((movie, index) => {
-              const providers = providersArray[index];
-              const providersHU: Provider[] = providers.results?.HU?.flatrate || [];
-                return { ...movie, providers: providersHU };
-            });
-            const streamable: Movie[] = moviesWithProviders.filter((movie) => movie.providers.length);
-            setStreamableMovies(streamable);
-            setIsLoading(false);
+            Promise.all(trailerPromises)
+              .then((trailersArray: TrailerResponse[]) => {
+                const moviesWithProvidersAndTrailers: Movie[] = movies.map((movie, index) => {
+                  const providers = providersArray[index];
+                  const providersHU: Provider[] = providers.results?.HU?.flatrate || [];
+                  const trailers = trailersArray[index];
+                  const trailerKey: string = trailers.results
+                    .filter((trailer) => trailer.official && trailer.type === 'Trailer' && trailer.site === 'YouTube')
+                    .sort((a, b) => Date.parse(b.published_at) - Date.parse(a.published_at))
+                    .slice(0, 1)
+                    .map((trailer) => trailer.key)[0];
+                  return {...movie, providers: providersHU, trailerKey: trailerKey };
+                });
+                const streamable: Movie[] = moviesWithProvidersAndTrailers.filter((movie) => movie.providers.length);
+                setStreamableMovies(streamable);
+                setIsLoading(false);
+              })
+              .catch((error) => {
+                console.error("Error fetching trailers:", error);
+              });
           })
           .catch((error) => {
             console.error("Error fetching providers:", error);
