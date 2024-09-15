@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Form, Button, ButtonGroup, Row, Col } from 'react-bootstrap';
+import { Form, Button, ButtonGroup, InputGroup, Row, Col } from 'react-bootstrap';
 import queryGenres from "../api/queryGenres";
 import { Genre } from "../interfaces/genreInterface";
 
@@ -87,51 +87,50 @@ const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams }) => {
 
   return (
     <Form>
-      <Row className="align-items-center">
-        <Col md="3">
-          <Form.Control
-            className="rounded-pill"
-            type="number"
-            placeholder="Release Year"
-            value={primaryReleaseYear}
-            onChange={handleYearChange}
-            onKeyDown={(event) => {
-              if (event.key === "Enter") {
-                event.preventDefault();
-                applyFilters();
-              }
-            }}
-          />
-        </Col>
-        <Col md="3">
-          <Form.Select
-            className="rounded-pill"
-            value={genre}
-            onChange={handleGenreChange}
-            onKeyDown={(event) => {
-              if (event.key === "Enter") {
-                event.preventDefault();
-                applyFilters();
-              }
-            }}
-          >
-            <option key={-1} value="">
-              All
-            </option>
-            {genreOptions.map((g) => (
-              <option key={g.id} value={g.id}>
-                {g.name}
+      <Row className="align-items-center mb-2">
+
+        <Col md="8">
+          <InputGroup>
+            <Form.Control
+              className="rounded-pill me-2"
+              type="number"
+              placeholder="Release Year"
+              value={primaryReleaseYear}
+              onChange={handleYearChange}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  event.preventDefault();
+                  applyFilters();
+                }
+              }}
+            />
+            <Form.Select
+              className="rounded-pill"
+              value={genre}
+              onChange={handleGenreChange}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  event.preventDefault();
+                  applyFilters();
+                }
+              }}
+            >
+              <option key={-1} value="">
+                All
               </option>
-            ))}
-          </Form.Select>
-        </Col>
-        <Col md="2">
-          <Button className="rounded-pill" variant="outline-primary" onClick={applyFilters}>
-            Search
-          </Button>
+              {genreOptions.map((g) => (
+                <option key={g.id} value={g.id}>
+                  {g.name}
+                </option>
+              ))}
+            </Form.Select>
+          </InputGroup>
         </Col>
         <Col md="4" className="d-flex justify-content-end">
           <ButtonGroup>
+            <Button className="rounded-pill me-2" variant="outline-primary" onClick={applyFilters}>
+              Search
+            </Button>
             <Button
               className="rounded-circle me-2"
               variant={`outline-secondary ${page === 1 ? "disabled" : ""}`}
