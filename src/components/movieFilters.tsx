@@ -39,6 +39,10 @@ const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams }) => {
     fetchGenres();
   }, []);
 
+  useEffect(() => {
+    applyFilters();
+  }, [genre]);
+
   const handleYearChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPrimaryReleaseYear(event.target.value);
   };
@@ -88,7 +92,6 @@ const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams }) => {
   return (
     <Form>
       <Row className="align-items-center mb-2">
-
         <Col md="8">
           <InputGroup>
             <Form.Control
