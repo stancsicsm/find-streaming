@@ -133,7 +133,7 @@ const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams, totalPag
               }}
             >
               <option key={-1} value="">
-                All
+                All Genres
               </option>
               {genreOptions.map((g) => (
                 <option key={g.id} value={g.id}>
