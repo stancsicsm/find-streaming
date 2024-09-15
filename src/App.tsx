@@ -34,8 +34,8 @@ const App: React.FC = () => {
                 const moviesWithProvidersAndTrailers: Movie[] = movies.map((movie, index) => {
                   const providers = providersArray[index];
                   const providersHU: Provider[] = providers.results?.HU?.flatrate || [];
-                  const trailers = trailersArray[index];
-                  const trailerKey: string = trailers.results
+                  const trailers: Trailer[] = trailersArray[index].results;
+                  const trailerKey: string = trailers
                     .filter((trailer) => trailer.official && trailer.type === 'Trailer' && trailer.site === 'YouTube')
                     .sort((a, b) => Date.parse(b.published_at) - Date.parse(a.published_at))
                     .slice(0, 1)
