@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Form, Button, Row, Col } from 'react-bootstrap';
+import { Form, Button, ButtonGroup, Row, Col } from 'react-bootstrap';
 import queryGenres from "../api/queryGenres";
 import { Genre } from "../interfaces/genreInterface";
 
@@ -87,8 +87,8 @@ const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams }) => {
 
   return (
     <Form>
-      <Row>
-        <Col md="4">
+      <Row className="align-items-center">
+        <Col md="3">
           <Form.Control
             className="rounded-pill"
             type="number"
@@ -103,7 +103,7 @@ const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams }) => {
             }}
           />
         </Col>
-        <Col md="4">
+        <Col md="3">
           <Form.Select
             className="rounded-pill"
             value={genre}
@@ -126,28 +126,28 @@ const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams }) => {
           </Form.Select>
         </Col>
         <Col md="2">
-          <Button className="rounded-pill" variant="primary" onClick={applyFilters}>
+          <Button className="rounded-pill" variant="outline-primary" onClick={applyFilters}>
             Search
           </Button>
         </Col>
-        <Col md="1">
-          <Button
-            className="rounded-circle"
-            variant={`secondary ${page === 1 ? "disabled" : ""}`}
-            onClick={previousPage}
-            disabled={page === 1}
-          >
-            &lt;
-          </Button>
-        </Col>
-        <Col md="1">
-          <Button
-            className="rounded-circle"
-            variant="secondary"
-            onClick={nextPage}
-          >
-            &gt;
-          </Button>
+        <Col md="4" className="d-flex justify-content-end">
+          <ButtonGroup>
+            <Button
+              className="rounded-circle me-2"
+              variant={`outline-secondary ${page === 1 ? "disabled" : ""}`}
+              onClick={previousPage}
+              disabled={page === 1}
+            >
+              &lt;
+            </Button>
+            <Button
+              className="rounded-circle"
+              variant="outline-secondary"
+              onClick={nextPage}
+            >
+              &gt;
+            </Button>
+          </ButtonGroup>
         </Col>
       </Row>
     </Form>
