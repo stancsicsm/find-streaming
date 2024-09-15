@@ -72,6 +72,7 @@ const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams }) => {
             onChange={handleYearChange}
             onKeyDown={(event) => {
               if (event.key === "Enter") {
+                event.preventDefault();
                 applyFilters();
               }
             }}
