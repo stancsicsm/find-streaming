@@ -143,7 +143,7 @@ const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams }) => {
         <Col md="1">
           <Button
             className="rounded-circle"
-            variant={`secondary ${page === 1 ? "disabled" : ""}`}
+            variant="secondary"
             onClick={nextPage}
           >
             &gt;
