@@ -47,14 +47,17 @@ const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams, totalPag
 
   const handleYearChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPrimaryReleaseYear(event.target.value);
+    setPage(1);
   };
 
   const handleGenreChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setGenre(event.target.value);
+    setPage(1);
   };
 
   const handleMovieTitleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMovieTitleSearch(event.target.value);
+    setPage(1);
   }
 
   const updatePageInFilters = (newPage: number) => {
