@@ -110,6 +110,13 @@ const App: React.FC = () => {
             <MoviesTable movies={streamableMovies} isLoading={isLoading} />
           </Col>
         </Row>
+        <Row className="justify-content-md-center">
+          <Col md="8">
+            <footer className="text-center mt-3">
+              <p>{filterParams.get("page")} / {totalPages}</p>
+            </footer>
+          </Col>
+        </Row>
       </Container>
   );
 };
