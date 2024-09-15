@@ -1,4 +1,4 @@
-import { Movie, Movies } from "../interfaces/movieInterfaces";
+import { MoviesResponse } from "../interfaces/movieInterfaces";
 
 const options = {
   method: "GET",
@@ -10,7 +10,7 @@ const options = {
 
 const queryMovies = (
   filterParams: Map<string, string | number> = new Map()
-): Promise<Movie[]> => {
+): Promise<MoviesResponse> => {
 
   let baseUrl: string;
   const urlParams = new URLSearchParams({
@@ -27,11 +27,15 @@ const queryMovies = (
 
   return fetch(`${baseUrl}?${urlParams.toString()}`, options)
     .then((response) => response.json())
-    .then((response) => response as Movies)
-    .then((response) => response.results as Movie[])
+    .then((response) => response as MoviesResponse)
     .catch((err) => {
       console.error(err);
-      return [] as Movie[];
+      return {
+        results: [],
+        page: 0,
+        total_pages: 0,
+        total_results: 0,
+      } as MoviesResponse;
     });
 };
 

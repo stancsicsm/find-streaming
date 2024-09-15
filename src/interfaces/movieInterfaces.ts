@@ -1,5 +1,4 @@
 import {Provider} from "./providerInterfaces";
-import {Trailer} from "./trailerInterface";
 
 interface Movie {
   id: number;
@@ -13,9 +12,11 @@ interface Movie {
   trailerKey?: string;
 }
 
-interface Movies {
-  page: number;
+interface MoviesResponse {
   results: Movie[];
+  page: number;
+  total_pages: number;
+  total_results: number;
 }
 
-export type { Movie, Movies };
+export type { Movie, MoviesResponse }

@@ -6,9 +6,10 @@ import { Genre } from "../interfaces/genreInterface";
 interface FilterProps {
   filterParams: Map<string, string | number>;
   setFilterParams: (filters: Map<string, string | number>) => void;
+  totalPages: number;
 }
 
-const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams }) => {
+const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams, totalPages}) => {
   const [primaryReleaseYear, setPrimaryReleaseYear] = useState<string>("");
   const [genreOptions, setGenreOptions] = useState<Genre[]>([]);
   const [genre, setGenre] = useState<string>("");
@@ -154,7 +155,7 @@ const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams }) => {
             </Button>
             <Button
               className="rounded-circle"
-              variant="outline-secondary"
+              variant={`outline-secondary ${page === totalPages ? "disabled" : ""}`}
               onClick={nextPage}
             >
               &gt;

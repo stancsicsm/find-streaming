@@ -19,6 +19,7 @@ const App: React.FC = () => {
   >(new Map());
   const [countryOptions, setCountryOptions] = useState<Country[]>([]);
   const [selectedCountryId, setSelectedCountryId] = useState("HU");
+  const [totalPages, setTotalPages] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -34,7 +35,9 @@ const App: React.FC = () => {
   useEffect(() => {
     setIsLoading(true);
     queryMovies(filterParams)
-      .then((movies) => {
+      .then((moviesResponse) => {
+        setTotalPages(moviesResponse.total_pages);
+        const movies: Movie[] = moviesResponse.results;
         const providerPromises = movies.map((movie) =>
           queryProviders(movie.id)
         );
@@ -95,7 +98,11 @@ const App: React.FC = () => {
         </Row>
         <Row className="justify-content-md-center mb-3">
           <Col md="8">
-            <Filter filterParams={filterParams} setFilterParams={setFilterParams} />
+            <Filter
+              filterParams={filterParams}
+              setFilterParams={setFilterParams}
+              totalPages={totalPages}
+            />
           </Col>
         </Row>
         <Row className="justify-content-md-center">
