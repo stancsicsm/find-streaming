@@ -12,6 +12,7 @@ const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams }) => {
   const [primaryReleaseYear, setPrimaryReleaseYear] = useState<string>("");
   const [genreOptions, setGenreOptions] = useState<Genre[]>([]);
   const [genre, setGenre] = useState<string>("");
+  const [movieTitleSearch, setMovieTitleSearch] = useState<string>("");
   const [page, setPage] = useState<number>(1);
 
   const isMounted = useRef(false);
@@ -51,6 +52,10 @@ const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams }) => {
     setGenre(event.target.value);
   };
 
+  const handleMovieTitleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setMovieTitleSearch(event.target.value);
+  }
+
   const updatePageInFilters = (newPage: number) => {
     const filters = new Map<string, string | number>(filterParams);
     filters.set("page", newPage);
@@ -84,6 +89,11 @@ const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams }) => {
       filters.set("with_genres", genre);
     } else {
       filters.delete("with_genres");
+    }
+    if (movieTitleSearch) {
+      filters.set("query", movieTitleSearch);
+    } else {
+      filters.delete("query");
     }
     filters.set("page", page);
     setFilterParams(filters);
@@ -150,6 +160,23 @@ const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams }) => {
               &gt;
             </Button>
           </ButtonGroup>
+        </Col>
+      </Row>
+      <Row>
+        <Col md="8">
+          <Form.Control
+            className="rounded-pill"
+            type="text"
+            placeholder="Movie Title"
+            value={filterParams.get("movie_title") as string}
+            onChange={handleMovieTitleSearchChange}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                event.preventDefault();
+                applyFilters();
+              }
+            }}
+          />
         </Col>
       </Row>
     </Form>

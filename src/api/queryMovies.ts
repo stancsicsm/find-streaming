@@ -11,15 +11,21 @@ const options = {
 const queryMovies = (
   filterParams: Map<string, string | number> = new Map()
 ): Promise<Movie[]> => {
-  const baseUrl =
-    "https://api.themoviedb.org/3/discover/movie?include_adult=false&sort_by=popularity.desc";
 
-  let queryParams = "";
-  for (const [key, value] of filterParams.entries()) {
-    queryParams += `&${key}=${value}`;
+  let baseUrl: string;
+  const urlParams = new URLSearchParams({
+    include_adult: "false",
+    sort_by: "popularity.desc",
+    ...Object.fromEntries(filterParams.entries())
+  });
+
+  if (filterParams.get("query")) {
+    baseUrl = "https://api.themoviedb.org/3/search/movie";
+  } else {
+    baseUrl = "https://api.themoviedb.org/3/discover/movie";
   }
 
-  return fetch(baseUrl + queryParams, options)
+  return fetch(`${baseUrl}?${urlParams.toString()}`, options)
     .then((response) => response.json())
     .then((response) => response as Movies)
     .then((response) => response.results as Movie[])
