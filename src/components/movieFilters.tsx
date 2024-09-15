@@ -90,6 +90,7 @@ const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams }) => {
       <Row>
         <Col md="4">
           <Form.Control
+            className="rounded-pill"
             type="number"
             placeholder="Release Year"
             value={primaryReleaseYear}
@@ -104,6 +105,7 @@ const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams }) => {
         </Col>
         <Col md="4">
           <Form.Select
+            className="rounded-pill"
             value={genre}
             onChange={handleGenreChange}
             onKeyDown={(event) => {
@@ -124,12 +126,13 @@ const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams }) => {
           </Form.Select>
         </Col>
         <Col md="2">
-          <Button variant="primary" onClick={applyFilters}>
+          <Button className="rounded-pill" variant="primary" onClick={applyFilters}>
             Search
           </Button>
         </Col>
         <Col md="1">
           <Button
+            className="rounded-circle"
             variant={`secondary ${page === 1 ? "disabled" : ""}`}
             onClick={previousPage}
             disabled={page === 1}
@@ -139,6 +142,7 @@ const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams }) => {
         </Col>
         <Col md="1">
           <Button
+            className="rounded-circle"
             variant={`secondary ${page === 1 ? "disabled" : ""}`}
             onClick={nextPage}
           >

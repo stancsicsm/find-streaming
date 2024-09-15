@@ -58,7 +58,7 @@ const MovieDetailModal: React.FC<MovieDetailModalProps> = ({ show, handleClose, 
         )}
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
+        <Button className="rounded-pill" variant="secondary" onClick={handleClose}>
           Close
         </Button>
       </Modal.Footer>
