@@ -43,7 +43,7 @@ const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams, totalPag
 
   useEffect(() => {
     applyFilters();
-  }, [genre]);
+  }, [genre]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleYearChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPrimaryReleaseYear(event.target.value);
