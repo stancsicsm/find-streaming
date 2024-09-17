@@ -2,14 +2,16 @@ import React, {useState} from "react";
 import { Table } from 'react-bootstrap';
 import { TableLoading } from 'react-bootstrap-table-loading';
 import { Movie } from "../interfaces/movieInterfaces";
+import {Genre} from "../interfaces/genreInterface";
 import MovieDetailModal from "./movieDetailModal";
 
 interface MoviesTableProps {
   movies: Movie[];
+  genreOptions: Genre[];
   isLoading: boolean;
 }
 
-const MoviesTable: React.FC<MoviesTableProps> = ({ movies, isLoading }) => {
+const MoviesTable: React.FC<MoviesTableProps> = ({ movies, genreOptions, isLoading }) => {
   const [show, setShow] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
@@ -59,10 +61,12 @@ const MoviesTable: React.FC<MoviesTableProps> = ({ movies, isLoading }) => {
           </tbody>
         )}
       </Table>
-
-      <>
-        <MovieDetailModal show={show} handleClose={handleClose} movie={selectedMovie} />
-      </>
+      <MovieDetailModal
+        show={show}
+        handleClose={handleClose}
+        movie={selectedMovie}
+        genreOptions={genreOptions}
+      />
     </div>
   );
 }

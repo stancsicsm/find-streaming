@@ -1,17 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Form, Button, ButtonGroup, InputGroup, Row, Col } from 'react-bootstrap';
-import queryGenres from "../api/queryGenres";
 import { Genre } from "../interfaces/genreInterface";
 
 interface FilterProps {
   filterParams: Map<string, string | number>;
   setFilterParams: (filters: Map<string, string | number>) => void;
+  genreOptions: Genre[];
   totalPages: number;
 }
 
-const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams, totalPages}) => {
+const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams, genreOptions, totalPages}) => {
   const [primaryReleaseYear, setPrimaryReleaseYear] = useState<string>("");
-  const [genreOptions, setGenreOptions] = useState<Genre[]>([]);
   const [genre, setGenre] = useState<string>("");
   const [movieTitleSearch, setMovieTitleSearch] = useState<string>("");
   const [page, setPage] = useState<number>(1);
@@ -27,19 +26,6 @@ const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams, totalPag
       isMounted.current = true;
     }
   }, [filterParams]);
-
-  useEffect(() => {
-    const fetchGenres = async () => {
-      try {
-        const response = await queryGenres();
-        setGenreOptions(response.genres);
-      } catch (error) {
-        console.error("Error fetching genres:", error);
-      }
-    };
-
-    fetchGenres();
-  }, []);
 
   useEffect(() => {
     applyFilters();
