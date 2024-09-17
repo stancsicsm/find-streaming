@@ -3,6 +3,7 @@ import queryMovies from "./api/queryMovies";
 import queryProviders from "./api/queryProviders";
 import queryTrailers from "./api/queryTrailers";
 import queryCountries from "./api/queryCountries";
+import queryGenres from "./api/queryGenres";
 import { Movie } from "./interfaces/movieInterfaces";
 import MoviesTable from "./components/moviesTable";
 import Filter from "./components/movieFilters";
@@ -11,6 +12,7 @@ import { TrailerResponse, Trailer } from "./interfaces/trailerInterface"
 import { Container, Row, Col } from 'react-bootstrap';
 import CountryFilter from "./components/countryFilter";
 import {Country} from "./interfaces/countryInterface";
+import {Genre} from "./interfaces/genreInterface";
 
 const App: React.FC = () => {
   const [streamableMovies, setStreamableMovies] = useState<Movie[]>([]);
@@ -19,6 +21,7 @@ const App: React.FC = () => {
   >(new Map());
   const [countryOptions, setCountryOptions] = useState<Country[]>([]);
   const [selectedCountryId, setSelectedCountryId] = useState("HU");
+  const [genreOptions, setGenreOptions] = useState<Genre[]>([]);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -29,6 +32,16 @@ const App: React.FC = () => {
       })
       .catch((error) => {
         console.error("Error fetching countries:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    queryGenres()
+      .then((genres) => {
+        setGenreOptions(genres.genres);
+      })
+      .catch((error) => {
+        console.error("Error fetching genres:", error);
       });
   }, []);
 
@@ -101,13 +114,14 @@ const App: React.FC = () => {
             <Filter
               filterParams={filterParams}
               setFilterParams={setFilterParams}
+              genreOptions={genreOptions}
               totalPages={totalPages}
             />
           </Col>
         </Row>
         <Row className="justify-content-md-center">
           <Col md="8">
-            <MoviesTable movies={streamableMovies} isLoading={isLoading} />
+            <MoviesTable movies={streamableMovies} genreOptions={genreOptions} isLoading={isLoading} />
           </Col>
         </Row>
         <Row className="justify-content-md-center">

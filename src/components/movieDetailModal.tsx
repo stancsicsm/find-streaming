@@ -1,16 +1,22 @@
 import React from "react";
 import {Movie} from "../interfaces/movieInterfaces";
+import {Genre} from "../interfaces/genreInterface";
 import { Button, Modal} from 'react-bootstrap';
 
 interface MovieDetailModalProps {
   show: boolean;
   handleClose: () => void;
   movie: Movie | null;
+  genreOptions: Genre[];
 }
 
-const MovieDetailModal: React.FC<MovieDetailModalProps> = ({ show, handleClose, movie }) => {
+const MovieDetailModal: React.FC<MovieDetailModalProps> = ({ show, handleClose, movie, genreOptions }) => {
   if (!movie) {
     return null;
+  }
+
+  const findGenre = (genreId: number) => {
+    return genreOptions.find((genre) => genre.id === genreId)?.name;
   }
 
   return (
@@ -26,6 +32,12 @@ const MovieDetailModal: React.FC<MovieDetailModalProps> = ({ show, handleClose, 
         />
         <h5>Description</h5>
         <p>{movie.overview}</p>
+        <h5>Genres</h5>
+        <p>
+          {movie.genre_ids.map((genreId) => {
+            return findGenre(genreId)
+          }).join(", ")}
+        </p>
         <h5>Rating</h5>
         <p>{movie.vote_average.toFixed(1)} / 10</p>
         <h5>Streaming Platforms</h5>
