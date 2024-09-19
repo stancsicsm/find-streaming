@@ -1,4 +1,4 @@
-import { ProvidersResponse } from "../interfaces/providerInterfaces";
+import {ProvidersResponse} from "../interfaces/providerInterfaces";
 
 const options = {
   method: "GET",

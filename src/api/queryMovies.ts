@@ -1,4 +1,4 @@
-import { MoviesResponse } from "../interfaces/movieInterfaces";
+import {MoviesResponse} from "../interfaces/movieInterfaces";
 
 const options = {
   method: "GET",

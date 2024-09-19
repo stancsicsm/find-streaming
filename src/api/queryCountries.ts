@@ -1,4 +1,4 @@
-import { Country } from "../interfaces/countryInterface";
+import {Country} from "../interfaces/countryInterface";
 
 const options = {
   method: "GET",

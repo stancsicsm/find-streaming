@@ -1,4 +1,4 @@
-import { TrailerResponse} from "../interfaces/trailerInterface";
+import {TrailerResponse} from "../interfaces/trailerInterface";
 
 const options = {
   method: "GET",

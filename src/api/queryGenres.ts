@@ -1,4 +1,4 @@
-import { Genres } from "../interfaces/genreInterface";
+import {Genres} from "../interfaces/genreInterface";
 
 const options = {
   method: "GET",
