@@ -1,9 +1,12 @@
 import React, {useState} from "react";
-import { Table } from 'react-bootstrap';
-import { TableLoading } from 'react-bootstrap-table-loading';
-import { Movie } from "../interfaces/movieInterfaces";
+import {Row, Col, Table} from 'react-bootstrap';
+
+import {Movie} from "../interfaces/movieInterfaces";
 import {Genre} from "../interfaces/genreInterface";
+
 import MovieDetailModal from "./movieDetailModal";
+
+import {TableLoading} from 'react-bootstrap-table-loading';
 
 interface MoviesTableProps {
   movies: Movie[];
@@ -22,23 +25,24 @@ const MoviesTable: React.FC<MoviesTableProps> = ({ movies, genreOptions, isLoadi
   }
 
   return (
-    <div>
-      <Table hover>
-        <thead>
+    <Row className="justify-content-md-center mb-2">
+      <Col>
+        <Table hover>
+          <thead>
           <tr>
             <th>Title</th>
             <th>Year</th>
             <th>Rating</th>
             <th>Streaming</th>
           </tr>
-        </thead>
-        {isLoading? (
-          <TableLoading
-            columns={4}
-            lines={5}
-          />
-        ) : (
-          <tbody>
+          </thead>
+          {isLoading? (
+            <TableLoading
+              columns={4}
+              lines={5}
+            />
+          ) : (
+            <tbody>
             {movies.map((movie: Movie) => (
               <tr key={movie.id} onClick={handleShow(movie)} role="button">
                 <td>{movie.title}</td>
@@ -58,16 +62,17 @@ const MoviesTable: React.FC<MoviesTableProps> = ({ movies, genreOptions, isLoadi
                 </td>
               </tr>
             ))}
-          </tbody>
-        )}
-      </Table>
-      <MovieDetailModal
-        show={show}
-        handleClose={handleClose}
-        movie={selectedMovie}
-        genreOptions={genreOptions}
-      />
-    </div>
+            </tbody>
+          )}
+        </Table>
+        <MovieDetailModal
+          show={show}
+          handleClose={handleClose}
+          movie={selectedMovie}
+          genreOptions={genreOptions}
+        />
+      </Col>
+    </Row>
   );
 }
 

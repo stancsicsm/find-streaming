@@ -1,15 +1,18 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Form, Button, ButtonGroup, InputGroup, Row, Col } from 'react-bootstrap';
-import { Genre } from "../interfaces/genreInterface";
+import React, {useState, useEffect, useRef} from "react";
+import {Row, Col, Form, Button, ButtonGroup, InputGroup} from 'react-bootstrap';
 
-interface FilterProps {
+import {Genre} from "../interfaces/genreInterface";
+
+export interface MovieFilterProps {
   filterParams: Map<string, string | number>;
   setFilterParams: (filters: Map<string, string | number>) => void;
   genreOptions: Genre[];
   totalPages: number;
 }
 
-const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams, genreOptions, totalPages}) => {
+const MovieFilter: React.FC<MovieFilterProps> = (movieFilterProps) => {
+  const {filterParams, setFilterParams, genreOptions, totalPages} = movieFilterProps;
+
   const [primaryReleaseYear, setPrimaryReleaseYear] = useState<string>("");
   const [genre, setGenre] = useState<string>("");
   const [movieTitleSearch, setMovieTitleSearch] = useState<string>("");
@@ -90,9 +93,9 @@ const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams, genreOpt
   };
 
   return (
-    <Form>
+    <>
       <Row className="align-items-center mb-2">
-        <Col md="8">
+        <Col>
           <InputGroup>
             <Form.Control
               className="rounded-pill me-2"
@@ -131,7 +134,7 @@ const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams, genreOpt
         </Col>
       </Row>
       <Row>
-        <Col md="8" className="mb-2 mb-md-0">
+        <Col className="mb-2">
           <Form.Control
             className="rounded-pill"
             type="text"
@@ -146,7 +149,9 @@ const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams, genreOpt
             }}
           />
         </Col>
-        <Col md="4" className="d-flex justify-content-end">
+      </Row>
+      <Row className="mb-2">
+        <Col className="d-flex justify-content-end">
           <ButtonGroup>
             <Button className="rounded-pill me-2" variant="outline-primary" onClick={applyFilters}>
               Search
@@ -169,8 +174,8 @@ const Filter: React.FC<FilterProps> = ({ filterParams, setFilterParams, genreOpt
           </ButtonGroup>
         </Col>
       </Row>
-    </Form>
+    </>
   );
 };
 
-export default Filter;
+export default MovieFilter;

@@ -1,7 +1,8 @@
 import React from "react";
+import {Button, Modal} from 'react-bootstrap';
+
 import {Movie} from "../interfaces/movieInterfaces";
 import {Genre} from "../interfaces/genreInterface";
-import { Button, Modal} from 'react-bootstrap';
 
 interface MovieDetailModalProps {
   show: boolean;

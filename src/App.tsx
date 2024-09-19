@@ -1,18 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
+import {Container} from 'react-bootstrap';
+
+import {Country} from "./interfaces/countryInterface";
+import {Genre} from "./interfaces/genreInterface";
+import {Movie} from "./interfaces/movieInterfaces";
+import {ProvidersResponse, Provider} from "./interfaces/providerInterfaces";
+import {TrailerResponse, Trailer} from "./interfaces/trailerInterface";
+
+import Filters from "./components/filters";
+import Footer from "./components/footer";
+import MoviesTable from "./components/moviesTable";
+import Title from "./components/title";
+
+import queryCountries from "./api/queryCountries";
+import queryGenres from "./api/queryGenres";
 import queryMovies from "./api/queryMovies";
 import queryProviders from "./api/queryProviders";
 import queryTrailers from "./api/queryTrailers";
-import queryCountries from "./api/queryCountries";
-import queryGenres from "./api/queryGenres";
-import { Movie } from "./interfaces/movieInterfaces";
-import MoviesTable from "./components/moviesTable";
-import Filter from "./components/movieFilters";
-import { ProvidersResponse, Provider } from "./interfaces/providerInterfaces";
-import { TrailerResponse, Trailer } from "./interfaces/trailerInterface"
-import { Container, Row, Col } from 'react-bootstrap';
-import CountryFilter from "./components/countryFilter";
-import {Country} from "./interfaces/countryInterface";
-import {Genre} from "./interfaces/genreInterface";
 
 const App: React.FC = () => {
   const [streamableMovies, setStreamableMovies] = useState<Movie[]>([]);
@@ -24,6 +28,18 @@ const App: React.FC = () => {
   const [genreOptions, setGenreOptions] = useState<Genre[]>([]);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(false);
+
+  const countryFilterProps = {
+    countries: countryOptions,
+    selectedCountryId: selectedCountryId,
+    setSelectedCountryId: setSelectedCountryId
+  }
+  const movieFilterProps = {
+    filterParams: filterParams,
+    setFilterParams: setFilterParams,
+    genreOptions: genreOptions,
+    totalPages: totalPages
+  }
 
   useEffect(() => {
     queryCountries()
@@ -97,40 +113,10 @@ const App: React.FC = () => {
 
   return (
       <Container>
-        <Row className="justify-content-md-center mb-3">
-          <Col md="6">
-            <h1 >Pick Me a Movie</h1>
-          </Col>
-          <Col md="2" className="d-flex align-items-center">
-            <CountryFilter
-              countries={countryOptions}
-              selectedCountryId={selectedCountryId}
-              setSelectedCountryId={setSelectedCountryId}
-            />
-          </Col>
-        </Row>
-        <Row className="justify-content-md-center mb-3">
-          <Col md="8">
-            <Filter
-              filterParams={filterParams}
-              setFilterParams={setFilterParams}
-              genreOptions={genreOptions}
-              totalPages={totalPages}
-            />
-          </Col>
-        </Row>
-        <Row className="justify-content-md-center">
-          <Col md="8">
-            <MoviesTable movies={streamableMovies} genreOptions={genreOptions} isLoading={isLoading} />
-          </Col>
-        </Row>
-        <Row className="justify-content-md-center">
-          <Col md="8">
-            <footer className="text-center mt-3">
-              <p>{filterParams.get("page")} / {totalPages}</p>
-            </footer>
-          </Col>
-        </Row>
+        <Title />
+        <Filters countryFilterProps={countryFilterProps} movieFilterProps={movieFilterProps} />
+        <MoviesTable movies={streamableMovies} genreOptions={genreOptions} isLoading={isLoading} />
+        <Footer totalPages={totalPages} filterParams={filterParams} />
       </Container>
   );
 };
