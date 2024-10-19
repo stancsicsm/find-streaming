@@ -1,13 +1,16 @@
-name: Deploy to S3
+name: Deploy to Raspberry Pi
 
 on:
   push:
     branches:
       - main
 
+  # Allows to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -24,11 +27,6 @@ jobs:
         run: npm install
 
       - name: Build and deploy
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: eu-north-1
-          BUCKET_NAME: stancsi-movie-picker
         run: |
           npm run build
-          aws s3 sync build/ s3://${BUCKET_NAME}/ --delete
+          pwd
