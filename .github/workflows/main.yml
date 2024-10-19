@@ -29,4 +29,4 @@ jobs:
       - name: Build and deploy
         run: |
           npm run build
-          cp -r build/* /var/www/find-streaming
+          sudo cp -r build/* /var/www/find-streaming
