@@ -9,7 +9,6 @@ interface Movie {
   genre_ids: number[];
   backdrop_path: string;
   providers: Provider[];
-  trailerKey?: string;
 }
 
 interface MoviesResponse {

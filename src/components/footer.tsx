@@ -11,7 +11,7 @@ const Footer: React.FC<FooterProps> = ({totalPages, filterParams}) => {
     <Row className="justify-content-md-center">
       <Col>
         <footer className="text-center mt-3">
-          <p>{filterParams.get("page")} / {totalPages}</p>
+          <p>{filterParams.get("page") ?? 1} / {totalPages}</p>
         </footer>
       </Col>
     </Row>
