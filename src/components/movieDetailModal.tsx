@@ -1,9 +1,10 @@
-import React, {useState} from "react";
-import {Button, Modal} from 'react-bootstrap';
+import React, {useEffect, useState} from "react";
+import {Button, Modal, Alert} from 'react-bootstrap';
 
 import {Movie} from "../interfaces/movieInterfaces";
 
 import queryTrailers from "../api/queryTrailers";
+import addMovieToRadarr from "../api/addMovieToRadarr";
 
 interface MovieDetailModalProps {
   show: boolean;
@@ -11,8 +12,16 @@ interface MovieDetailModalProps {
   movie: Movie | null;
 }
 
-const MovieDetailModal: React.FC<MovieDetailModalProps> = ({ show, handleClose, movie }) => {
+const MovieDetailModal: React.FC<MovieDetailModalProps> = ({show, handleClose, movie}) => {
   const [trailerKey, setTrailerKey] = useState<string | null>(null);
+  const [radarrMessage, setRadarrMessage] = useState<{message: string; variant: string}>({
+    message: '',
+    variant: ''
+  });
+
+  useEffect(() => {
+    setRadarrMessage({message: '', variant: ''});
+  }, [show]);
 
   if (!movie) {
     return null;
@@ -30,7 +39,30 @@ const MovieDetailModal: React.FC<MovieDetailModalProps> = ({ show, handleClose, 
   })
 
   const handleAddToRadarr = () => {
-    console.log(movie.id)
+    addMovieToRadarr(movie.id, movie.title)
+      .then(response => {
+        if (response.status === 201) {
+          setRadarrMessage({
+            message: `${movie.title} added to Radarr`,
+            variant: 'success'
+          })
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data[0].errorCode === 'MovieExistsValidator') {
+          setRadarrMessage({
+            message: `${movie.title} already added to Radarr`,
+            variant: 'warning'
+          });
+        } else {
+          setRadarrMessage({
+            message: `Failed to add ${movie.title} to Radarr`,
+            variant: 'danger'
+          });
+        }
+      })
+      .catch(error => console.error(error));
   }
 
   return (
@@ -39,6 +71,16 @@ const MovieDetailModal: React.FC<MovieDetailModalProps> = ({ show, handleClose, 
         <Modal.Title>{`${movie.title} (${movie.release_date.split('-')[0]})`}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        {radarrMessage.message &&
+            <Alert
+                variant={radarrMessage.variant}
+                onClose={() => setRadarrMessage({message: '', variant: ''})}
+                dismissible
+            >
+              {radarrMessage.message}
+            </Alert>
+        }
+
         {movie.backdrop_path && (
           <img
             src={`https://image.tmdb.org/t/p/w1280${movie.backdrop_path}`}
@@ -83,7 +125,7 @@ const MovieDetailModal: React.FC<MovieDetailModalProps> = ({ show, handleClose, 
         )}
       </Modal.Body>
       <Modal.Footer>
-        <Button className="rounded-pill disabled" variant="primary" onClick={handleAddToRadarr}>
+        <Button className="rounded-pill" variant="primary" onClick={handleAddToRadarr}>
           Add to Radarr
         </Button>
         <Button className="rounded-pill ms-auto" variant="secondary" onClick={handleClose}>
