@@ -62,7 +62,13 @@ const MovieDetailModal: React.FC<MovieDetailModalProps> = ({show, handleClose, m
           });
         }
       })
-      .catch(error => console.error(error));
+      .catch(error => {
+        setRadarrMessage({
+          message: `Failed to add ${movie.title} to Radarr`,
+          variant: 'danger'
+        });
+        console.error(error)
+      });
   }
 
   return (
