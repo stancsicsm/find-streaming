@@ -125,7 +125,7 @@ const MovieDetailModal: React.FC<MovieDetailModalProps> = ({show, handleClose, m
         )}
       </Modal.Body>
       <Modal.Footer>
-        <Button className="rounded-pill" variant="primary" onClick={handleAddToRadarr}>
+        <Button className="rounded-pill" variant="outline-secondary" onClick={handleAddToRadarr}>
           Add to Radarr
         </Button>
         <Button className="rounded-pill ms-auto" variant="secondary" onClick={handleClose}>

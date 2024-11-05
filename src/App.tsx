@@ -8,6 +8,7 @@ import Title from "./components/title";
 import Footer from "./components/footer";
 import MoviesTable from "./components/moviesTable";
 import MovieFilter from "./components/movieFilter";
+import PageNavigation from "./components/pageNavigation";
 
 import queryMovies from "./api/queryMovies";
 import queryProviders from "./api/queryProviders";
@@ -24,7 +25,6 @@ const App: React.FC = () => {
   const movieFilterProps = {
     filterParams: filterParams,
     setFilterParams: setFilterParams,
-    totalPages: totalPages
   }
 
   useEffect(() => {
@@ -71,6 +71,9 @@ const App: React.FC = () => {
       <Title/>
       <MovieFilter {...movieFilterProps} />
       <MoviesTable movies={moviesToShow} isLoading={isLoading} emptySearch={emptySearch }/>
+      {totalPages > 1 &&
+        <PageNavigation {...movieFilterProps} totalPages={totalPages} />
+      }
       {!emptySearch &&
           <Footer totalPages={totalPages} filterParams={filterParams}/>
       }
