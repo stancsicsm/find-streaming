@@ -46,10 +46,14 @@ const MovieDetailModal: React.FC<MovieDetailModalProps> = ({show, handleClose, m
             message: `${movie.title} added to Radarr`,
             variant: 'success'
           })
+          return;
         }
         return response.json();
       })
       .then(data => {
+        if (!data) {
+          return;
+        }
         if (data[0].errorCode === 'MovieExistsValidator') {
           setRadarrMessage({
             message: `${movie.title} already added to Radarr`,
