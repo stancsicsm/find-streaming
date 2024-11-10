@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Button, Modal, Alert} from 'react-bootstrap';
+import {Button, Modal, Alert, Spinner} from 'react-bootstrap';
 
 import {Movie} from "../interfaces/movieInterfaces";
 
@@ -14,10 +14,11 @@ interface MovieDetailModalProps {
 
 const MovieDetailModal: React.FC<MovieDetailModalProps> = ({show, handleClose, movie}) => {
   const [trailerKey, setTrailerKey] = useState<string | null>(null);
-  const [radarrMessage, setRadarrMessage] = useState<{message: string; variant: string}>({
+  const [radarrMessage, setRadarrMessage] = useState<{ message: string; variant: string }>({
     message: '',
     variant: ''
   });
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     setRadarrMessage({message: '', variant: ''});
@@ -39,9 +40,11 @@ const MovieDetailModal: React.FC<MovieDetailModalProps> = ({show, handleClose, m
   })
 
   const handleAddToRadarr = () => {
+    setIsLoading(true);
     addMovieToRadarr(movie.id, movie.title)
       .then(response => {
         if (response.status === 201) {
+          setIsLoading(false);
           setRadarrMessage({
             message: `${movie.title} added to Radarr`,
             variant: 'success'
@@ -51,6 +54,7 @@ const MovieDetailModal: React.FC<MovieDetailModalProps> = ({show, handleClose, m
         return response.json();
       })
       .then(data => {
+        setIsLoading(false);
         if (!data) {
           return;
         }
@@ -135,9 +139,21 @@ const MovieDetailModal: React.FC<MovieDetailModalProps> = ({show, handleClose, m
         )}
       </Modal.Body>
       <Modal.Footer>
-        <Button className="rounded-pill" variant="outline-secondary" onClick={handleAddToRadarr}>
+        <Button
+          className="rounded-pill"
+          variant="outline-secondary"
+          onClick={handleAddToRadarr}
+          disabled={isLoading}
+        >
           Add to Radarr
         </Button>
+        <Spinner
+          className={`ms-1`}
+          as="span"
+          size="sm"
+          variant="secondary"
+          hidden={!isLoading}
+        />
         <Button className="rounded-pill ms-auto" variant="secondary" onClick={handleClose}>
           Close
         </Button>
