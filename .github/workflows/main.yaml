@@ -36,4 +36,4 @@ jobs:
           platforms: linux/arm64
           push: true
           tags: ${{ vars.DOCKERHUB_USERNAME }}/find-streaming:latest
-          build-args: GITHUB_WORKSPACE=${GITHUB_WORKSPACE}
+          build-args: BUILD_DIR=$(pwd)/build
