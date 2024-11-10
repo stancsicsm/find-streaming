@@ -4,7 +4,7 @@ RUN adduser -D static
 USER static
 WORKDIR /home/static
 
-COPY ${BUILD_DIR} .
+COPY /home/runner/work/find-streaming/find-streaming/build .
 
 EXPOSE 3001
 

@@ -15,8 +15,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install dependencies and build
-        run: npm install && npm run build
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -30,10 +33,10 @@ jobs:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push
+      - name: Build Docker image and push
         uses: docker/build-push-action@v6
         with:
           platforms: linux/arm64
           push: true
           tags: ${{ vars.DOCKERHUB_USERNAME }}/find-streaming:latest
-          build-args: BUILD_DIR=$(pwd)/build
+          build-args: BUILD_DIR=$GITHUB_WORKSPACE/build
