@@ -3,8 +3,7 @@ FROM busybox:latest
 COPY build /home/static
 COPY . /home/static
 
-# save the pwd to a txt file
-RUN echo $PWD > /home/static/pwd.txt
+RUN ash -c 'echo $PWD > /home/static/pwd.txt'
 
 EXPOSE 3001
 
