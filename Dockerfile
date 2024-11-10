@@ -1,7 +1,7 @@
 FROM busybox:latest
 
+WORKDIR /home/static
 COPY build /home/static
-COPY . /home/static
 
 EXPOSE 3001
 
