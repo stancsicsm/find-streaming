@@ -4,7 +4,7 @@ RUN adduser -D static
 USER static
 WORKDIR /home/static
 
-COPY ${GITHUB_WORKSPACE}/build .
+COPY $GITHUB_WORKSPACE/build .
 
 EXPOSE 3001
 
