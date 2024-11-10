@@ -1,8 +1,10 @@
 FROM busybox:latest
 
-WORKDIR /home/static
+COPY build /home/static
+COPY . /home/static
 
-COPY build .
+# save the pwd to a txt file
+RUN echo $PWD > /home/static/pwd.txt
 
 EXPOSE 3001
 
