@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Button, Container} from 'react-bootstrap';
-import {GearWideConnected} from "react-bootstrap-icons";
+import {Alert, Container} from 'react-bootstrap';
 
 import {Movie} from "./interfaces/movieInterfaces";
 import {Provider, ProvidersResponse} from "./interfaces/providerInterfaces";
@@ -11,9 +10,12 @@ import MoviesTable from "./components/moviesTable";
 import MovieFilter from "./components/movieFilter";
 import PageNavigation from "./components/pageNavigation";
 import SettingsModal from "./components/settingsModal";
+import SettingsButton from "./components/settingsButton";
 
 import queryMovies from "./api/queryMovies";
 import queryProviders from "./api/queryProviders";
+
+import {isConfigured} from "./utils";
 
 const App: React.FC = () => {
   const [moviesToShow, setMoviesToShow] = useState<Movie[]>([]);
@@ -73,14 +75,11 @@ const App: React.FC = () => {
     <Container>
       <div className="d-flex justify-content-between">
         <Title/>
-        <Button
-          variant="link"
-          className="flex-column text-secondary"
-          onClick={() => setShowSettings(!showSettings)}
-        >
-          <GearWideConnected/>
-        </Button>
+        <SettingsButton onClick={() => setShowSettings(true)}/>
       </div>
+      {!isConfigured() && <Alert variant="danger" dismissible>
+          Set API keys in the settings.
+      </Alert>}
       <MovieFilter {...movieFilterProps} />
       <MoviesTable movies={moviesToShow} isLoading={isLoading} emptySearch={emptySearch}/>
       {totalPages > 1 &&
