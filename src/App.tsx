@@ -55,7 +55,7 @@ const App: React.FC = () => {
               const providers = providersArray[index];
               const providersForSingleMovie: Provider[] = providers
                 .results
-                ?.['HU']
+                ?.[localStorage.getItem("country") ?? "HU"]
                 ?.flatrate || [];
               return {...movie, providers: providersForSingleMovie};
             });
