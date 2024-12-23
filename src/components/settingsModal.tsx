@@ -1,12 +1,12 @@
-import { Button, Modal, Form } from "react-bootstrap";
-import React, { useState } from "react";
+import {Button, Modal, Form} from "react-bootstrap";
+import React, {useState} from "react";
 
 interface settingsModalProps {
   show: boolean;
   handleClose: () => void;
 }
 
-const SettingsModal: React.FC<settingsModalProps> = ({ show, handleClose }) => {
+const SettingsModal: React.FC<settingsModalProps> = ({show, handleClose}) => {
   const [radarrUrl, setRadarrUrl] = useState(() => {
     const storedRadarrUrl = localStorage.getItem("radarrUrl");
     return storedRadarrUrl || "http://pi.local:7878";
@@ -27,6 +27,13 @@ const SettingsModal: React.FC<settingsModalProps> = ({ show, handleClose }) => {
     localStorage.setItem("tmdbApiKey", tmdbApiKey);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSave();
+      handleClose();
+    }
+  };
+
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
@@ -41,6 +48,7 @@ const SettingsModal: React.FC<settingsModalProps> = ({ show, handleClose }) => {
               className="rounded-pill focus-ring focus-ring-secondary border"
               value={radarrUrl}
               onChange={(e) => setRadarrUrl(e.target.value)}
+              onKeyDown={handleKeyDown}
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="radarrApiKey">
@@ -50,6 +58,7 @@ const SettingsModal: React.FC<settingsModalProps> = ({ show, handleClose }) => {
               className="rounded-pill focus-ring focus-ring-secondary border"
               value={radarrApiKey}
               onChange={(e) => setRadarrApiKey(e.target.value)}
+              onKeyDown={handleKeyDown}
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="tmdbApiKey">
@@ -59,6 +68,7 @@ const SettingsModal: React.FC<settingsModalProps> = ({ show, handleClose }) => {
               className="rounded-pill focus-ring focus-ring-secondary border"
               value={tmdbApiKey}
               onChange={(e) => setTmdbApiKey(e.target.value)}
+              onKeyDown={handleKeyDown}
             />
           </Form.Group>
         </Form>
