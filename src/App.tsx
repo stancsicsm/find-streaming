@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
-import {Container} from 'react-bootstrap';
+import {Button, Container} from 'react-bootstrap';
+import {GearWideConnected} from "react-bootstrap-icons";
 
 import {Movie} from "./interfaces/movieInterfaces";
 import {Provider, ProvidersResponse} from "./interfaces/providerInterfaces";
@@ -9,6 +10,7 @@ import Footer from "./components/footer";
 import MoviesTable from "./components/moviesTable";
 import MovieFilter from "./components/movieFilter";
 import PageNavigation from "./components/pageNavigation";
+import SettingsModal from "./components/settingsModal";
 
 import queryMovies from "./api/queryMovies";
 import queryProviders from "./api/queryProviders";
@@ -21,6 +23,7 @@ const App: React.FC = () => {
   const [emptySearch, setEmptySearch] = useState<boolean>(true);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
 
   const movieFilterProps = {
     filterParams: filterParams,
@@ -68,15 +71,25 @@ const App: React.FC = () => {
 
   return (
     <Container>
-      <Title/>
+      <div className="d-flex justify-content-between">
+        <Title/>
+        <Button
+          variant="link"
+          className="flex-column text-secondary"
+          onClick={() => setShowSettings(!showSettings)}
+        >
+          <GearWideConnected/>
+        </Button>
+      </div>
       <MovieFilter {...movieFilterProps} />
-      <MoviesTable movies={moviesToShow} isLoading={isLoading} emptySearch={emptySearch }/>
+      <MoviesTable movies={moviesToShow} isLoading={isLoading} emptySearch={emptySearch}/>
       {totalPages > 1 &&
-        <PageNavigation {...movieFilterProps} totalPages={totalPages} />
+          <PageNavigation {...movieFilterProps} totalPages={totalPages}/>
       }
       {!emptySearch &&
           <Footer totalPages={totalPages} filterParams={filterParams}/>
       }
+      <SettingsModal show={showSettings} handleClose={() => setShowSettings(false)}/>
     </Container>
   );
 };

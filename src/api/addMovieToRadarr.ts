@@ -1,5 +1,5 @@
 const addMovieToRadarr = (tmdbId: number, title: string) => {
-  const url = `http://pi.local:7878/api/v3/movie?apiKey=${process.env.REACT_APP_RADARR_API_KEY}`;
+  const url = `${localStorage.getItem("radarrUrl")}/api/v3/movie?apiKey=${localStorage.getItem("radarrApiKey")}`;
   const body = {
     "tmdbId": tmdbId,
     "title": title,
