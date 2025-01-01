@@ -1,4 +1,5 @@
-import { Country } from "../interfaces/countryInterface";
+import {Country} from "../interfaces/countryInterface";
+
 const options = {
   method: "GET",
   headers: {
@@ -12,7 +13,9 @@ const queryCountries = (): Promise<Country[]> => {
     options
   )
     .then((response) => response.json())
-    .then((response) => response as Country[])
+    .then((response) => {
+      return response.success === false ? [] : response as Country[];
+    })
     .catch((err) => {
       console.error(err);
       return [] as Country[];
