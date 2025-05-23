@@ -1,21 +1,22 @@
-import {Button, Modal, Form} from "react-bootstrap";
-import React, {useEffect, useState} from "react";
-import {Typeahead} from 'react-bootstrap-typeahead';
-import {Option} from "react-bootstrap-typeahead/types/types";
+import { Button, Modal, Form } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Typeahead } from "react-bootstrap-typeahead";
+import { Option } from "react-bootstrap-typeahead/types/types";
 
-import {Country} from "../interfaces/countryInterface";
+import { Country } from "../interfaces/countryInterface";
+import ThemeToggle from "./themeToggle";
 
 import queryCountries from "../api/queryCountries";
 
-import 'react-bootstrap-typeahead/css/Typeahead.css';
-import 'react-bootstrap-typeahead/css/Typeahead.bs5.css';
+import "react-bootstrap-typeahead/css/Typeahead.css";
+import "react-bootstrap-typeahead/css/Typeahead.bs5.css";
 
 interface settingsModalProps {
   show: boolean;
   handleClose: () => void;
 }
 
-const SettingsModal: React.FC<settingsModalProps> = ({show, handleClose}) => {
+const SettingsModal: React.FC<settingsModalProps> = ({ show, handleClose }) => {
   const [radarrUrl, setRadarrUrl] = useState(() => {
     const storedRadarrUrl = localStorage.getItem("radarrUrl");
     return storedRadarrUrl || "http://pi.local:7878";
@@ -46,13 +47,14 @@ const SettingsModal: React.FC<settingsModalProps> = ({show, handleClose}) => {
   }, []);
 
   useEffect(() => {
-    const selectedCountry = countryOptions.find((country) => country.iso_3166_1 === selectedCountryCode);
+    const selectedCountry = countryOptions.find(
+      (country) => country.iso_3166_1 === selectedCountryCode
+    );
     setSelectedCountry(selectedCountry ?? null);
   }, [countryOptions, selectedCountryCode]);
 
-
   const handleSave = () => {
-    setRadarrUrl(radarrUrl.replace(/\/+$/, ''));
+    setRadarrUrl(radarrUrl.replace(/\/+$/, ""));
     localStorage.setItem("radarrUrl", radarrUrl);
     localStorage.setItem("radarrApiKey", radarrApiKey);
     localStorage.setItem("tmdbApiKey", tmdbApiKey);
@@ -60,7 +62,7 @@ const SettingsModal: React.FC<settingsModalProps> = ({show, handleClose}) => {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       handleSave();
       handleClose();
     }
@@ -69,7 +71,10 @@ const SettingsModal: React.FC<settingsModalProps> = ({show, handleClose}) => {
   const handleSelectCountry = (selected: Option[]) => {
     if (selected.length > 0) {
       const selectedOption = selected[0];
-      if (typeof selectedOption === 'object' && 'iso_3166_1' in selectedOption) {
+      if (
+        typeof selectedOption === "object" &&
+        "iso_3166_1" in selectedOption
+      ) {
         setSelectedCountryCode(selectedOption.iso_3166_1);
       }
     }
@@ -122,17 +127,23 @@ const SettingsModal: React.FC<settingsModalProps> = ({show, handleClose}) => {
               defaultSelected={selectedCountry ? [selectedCountry] : []}
               clearButton
               inputProps={{
-                className: "rounded-pill focus-ring focus-ring-secondary border",
+                className:
+                  "rounded-pill focus-ring focus-ring-secondary border",
               }}
             />
           </Form.Group>
+          <ThemeToggle />
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button className="rounded-pill" variant="primary" onClick={() => {
-          handleSave();
-          handleClose();
-        }}>
+        <Button
+          className="rounded-pill"
+          variant="primary"
+          onClick={() => {
+            handleSave();
+            handleClose();
+          }}
+        >
           Save
         </Button>
       </Modal.Footer>
