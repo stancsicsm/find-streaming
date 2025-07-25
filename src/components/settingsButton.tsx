@@ -13,7 +13,7 @@ const SettingsButton: React.FC<settingsButtonProps> = ({onClick}) => {
     <Button
       variant="link"
       size="lg"
-      className={`flex-column ${isConfigured() ? 'text-secondary' : 'text-danger'}`}
+      className={`${isConfigured() ? 'text-secondary' : 'text-danger'}`}
       onClick={onClick}
     >
       <GearWideConnected/>
