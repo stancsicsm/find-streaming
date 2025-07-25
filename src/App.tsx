@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Container } from 'react-bootstrap';
 
-import { Movie } from './interfaces/movieInterfaces';
+import { Movie, RadarrMovie } from './interfaces/movieInterfaces';
 import { Provider, ProvidersResponse } from './interfaces/providerInterfaces';
 
 import Title from './components/title';
@@ -15,6 +15,7 @@ import DarkModeToggle from './components/darkModeToggle';
 
 import queryMovies from './api/queryMovies';
 import queryProviders from './api/queryProviders';
+import queryRadarrMovies from './api/queryRadarrMovies';
 
 import { isConfigured } from './utils';
 
@@ -46,23 +47,41 @@ const App: React.FC = () => {
         setTotalPages(moviesResponse.total_pages);
         const movies: Movie[] = moviesResponse.results;
         const providerPromises = movies.map((movie) => queryProviders(movie.id));
-        Promise.all(providerPromises)
-          .then((providersArray: ProvidersResponse[]) => {
+        const radarrMoviesPromise = queryRadarrMovies();
+
+        Promise.all([Promise.all(providerPromises), radarrMoviesPromise])
+          .then(([providersArray, radarrMovies]: [ProvidersResponse[], RadarrMovie[]]) => {
             const moviesWithProviders: Movie[] = movies.map((movie, index) => {
               const providers = providersArray[index];
               const providersForSingleMovie: Provider[] =
                 providers.results?.[localStorage.getItem('country') ?? 'HU']?.flatrate || [];
+
+              const movieInRadarr = radarrMovies.find(
+                (radarrMovie) => radarrMovie.tmdbId === movie.id,
+              );
+              if (movieInRadarr) {
+                const radarrProvider: Provider = {
+                  provider_id: -1,
+                  provider_name: 'Radarr',
+                  logo_path: '',
+                  display_priority: 0,
+                };
+                providersForSingleMovie.push(radarrProvider);
+              }
+
               return { ...movie, providers: providersForSingleMovie };
             });
             setMoviesToShow(moviesWithProviders);
             setIsLoading(false);
           })
           .catch((error) => {
-            console.error('Error fetching providers:', error);
+            console.error('Error fetching providers or Radarr movies:', error);
+            setIsLoading(false);
           });
       })
       .catch((error) => {
         console.error('Error fetching movies:', error);
+        setIsLoading(false);
       });
   }, [filterParams]);
 

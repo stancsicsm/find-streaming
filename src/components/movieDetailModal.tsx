@@ -112,11 +112,15 @@ const MovieDetailModal: React.FC<MovieDetailModalProps> = ({ show, handleClose, 
           <>
             <h5>Streaming Platforms</h5>
             {movie.providers.map((provider) => (
-              <p key={provider.logo_path}>
+              <p key={provider.provider_id}>
                 <img
                   alt={provider.provider_name}
                   className="provider-logo me-2 rounded-circle"
-                  src={`https://image.tmdb.org/t/p/original${provider.logo_path}`}
+                  src={
+                    provider.provider_name === 'Radarr'
+                      ? '/radarrLogo.svg'
+                      : `https://image.tmdb.org/t/p/original${provider.logo_path}`
+                  }
                   width={30}
                   height={30}
                 />
