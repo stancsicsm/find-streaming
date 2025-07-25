@@ -1,4 +1,20 @@
-const addMovieToRadarr = (tmdbId: number, title: string) => {
+import queryRootFolder from './queryRootFolder';
+import { RootFolder } from '../interfaces/rootFolderInterface';
+
+const addMovieToRadarr = async (tmdbId: number, title: string) => {
+  // First, get the root folder path
+  const rootFolderResponse = await queryRootFolder();
+  if (!rootFolderResponse.ok) {
+    throw new Error('Failed to fetch root folder information');
+  }
+  
+  const rootFolders: RootFolder[] = await rootFolderResponse.json();
+  const accessibleFolder = rootFolders.find(folder => folder.accessible);
+  
+  if (!accessibleFolder) {
+    throw new Error('No accessible root folder found');
+  }
+
   const url = `${localStorage.getItem("radarrUrl")}/api/v3/movie?apiKey=${localStorage.getItem("radarrApiKey")}`;
   const body = {
     "tmdbId": tmdbId,
@@ -9,7 +25,7 @@ const addMovieToRadarr = (tmdbId: number, title: string) => {
     "addOptions": {
       "searchForMovie": true
     },
-    "rootFolderPath": "/movies/movies"
+    "rootFolderPath": accessibleFolder.path
   };
 
   return fetch(url, {
