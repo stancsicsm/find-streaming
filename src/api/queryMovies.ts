@@ -18,10 +18,11 @@ const queryMovies = async (
     baseUrl = 'https://api.themoviedb.org/3/discover/movie';
   }
 
-  const response = await fetch(`${baseUrl}?${urlParams.toString()}`, getTmdbOptions());
-  const moviesResponse = (await response.json()) as MoviesResponse;
+  try {
+    const response = await fetch(`${baseUrl}?${urlParams.toString()}`, getTmdbOptions());
+    const moviesResponse = (await response.json()) as MoviesResponse;
 
-  const radarrUrl = localStorage.getItem('radarrUrl');
+    const radarrUrl = localStorage.getItem('radarrUrl');
   const radarrApiKey = localStorage.getItem('radarrApiKey');
 
   if (radarrUrl && radarrApiKey) {
@@ -41,6 +42,15 @@ const queryMovies = async (
   }
 
   return moviesResponse;
+  } catch (err) {
+    console.error(err);
+    return {
+      results: [],
+      page: 0,
+      total_pages: 0,
+      total_results: 0,
+    } as MoviesResponse;
+  }
 };
 
 export default queryMovies;
