@@ -11,6 +11,7 @@ import MovieFilter from "./components/movieFilter";
 import PageNavigation from "./components/pageNavigation";
 import SettingsModal from "./components/settingsModal";
 import SettingsButton from "./components/settingsButton";
+import DarkModeToggle from "./components/darkModeToggle";
 
 import queryMovies from "./api/queryMovies";
 import queryProviders from "./api/queryProviders";
@@ -75,7 +76,10 @@ const App: React.FC = () => {
     <Container>
       <div className="d-flex justify-content-between">
         <Title/>
-        <SettingsButton onClick={() => setShowSettings(true)}/>
+        <div className="d-flex">
+          <DarkModeToggle />
+          <SettingsButton onClick={() => setShowSettings(true)}/>
+        </div>
       </div>
       {!isConfigured() && <Alert variant="danger" dismissible>
           Set API keys in the settings.
