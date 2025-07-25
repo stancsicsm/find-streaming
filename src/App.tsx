@@ -76,7 +76,7 @@ const App: React.FC = () => {
     <Container>
       <div className="d-flex justify-content-between">
         <Title/>
-        <div className="d-flex">
+        <div className="d-flex align-items-center gap-3">
           <DarkModeToggle />
           <SettingsButton onClick={() => setShowSettings(true)}/>
         </div>

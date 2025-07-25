@@ -1,5 +1,4 @@
 import React from "react";
-import {Button} from 'react-bootstrap';
 import {GearWideConnected} from "react-bootstrap-icons";
 
 import {isConfigured} from "../utils";
@@ -10,14 +9,13 @@ interface settingsButtonProps {
 
 const SettingsButton: React.FC<settingsButtonProps> = ({onClick}) => {
   return (
-    <Button
-      variant="link"
-      size="lg"
+    <GearWideConnected
+      size={24}
       className={`${isConfigured() ? 'text-secondary' : 'text-danger'}`}
       onClick={onClick}
-    >
-      <GearWideConnected/>
-    </Button>
+      style={{cursor: 'pointer'}}
+      title="Settings"
+    />
   );
 };
 
