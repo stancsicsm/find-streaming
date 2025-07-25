@@ -5,7 +5,7 @@ interface Movie {
   title: string;
   overview: string;
   vote_average: number;
-  release_date: string;
+  release_date?: string;
   genre_ids: number[];
   backdrop_path: string;
   providers: Provider[];

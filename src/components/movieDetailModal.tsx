@@ -82,7 +82,7 @@ const MovieDetailModal: React.FC<MovieDetailModalProps> = ({show, handleClose, m
   return (
     <Modal show={show} onHide={handleClose} scrollable={true}>
       <Modal.Header closeButton>
-        <Modal.Title>{`${movie.title} (${movie.release_date.split('-')[0]})`}</Modal.Title>
+        <Modal.Title>{`${movie.title} (${movie.release_date?.split('-')[0]})`}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         {radarrMessage.message &&
