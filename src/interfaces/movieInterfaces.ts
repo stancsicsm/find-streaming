@@ -18,4 +18,9 @@ interface MoviesResponse {
   total_results: number;
 }
 
-export type { Movie, MoviesResponse };
+interface RadarrMovie {
+  id: number;
+  tmdbId: number;
+}
+
+export type { Movie, MoviesResponse, RadarrMovie };
