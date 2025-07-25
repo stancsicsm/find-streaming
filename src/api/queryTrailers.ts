@@ -1,17 +1,10 @@
 import {TrailerResponse} from "../interfaces/trailerInterface";
-
-const options = {
-  method: "GET",
-  headers: {
-    accept: "application/json",
-    Authorization: `Bearer ${localStorage.getItem("tmdbApiKey")}`,
-  },
-};
+import {getTmdbOptions} from "../utils";
 
 const queryTrailers = (movie_id: number): Promise<TrailerResponse> => {
   return fetch(
     `https://api.themoviedb.org/3/movie/${movie_id}/videos?language=en-US`,
-    options
+    getTmdbOptions()
   )
     .then((response) => response.json())
     .then((response) => response as TrailerResponse)
