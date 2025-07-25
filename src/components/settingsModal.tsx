@@ -6,6 +6,7 @@ import {Option} from "react-bootstrap-typeahead/types/types";
 import {Country} from "../interfaces/countryInterface";
 
 import queryCountries from "../api/queryCountries";
+import queryRadarrHealth from '../api/queryRadarrHealth';
 
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import 'react-bootstrap-typeahead/css/Typeahead.bs5.css';
@@ -34,6 +35,7 @@ const SettingsModal: React.FC<settingsModalProps> = ({show, handleClose}) => {
     const storedCountryCode = localStorage.getItem("country");
     return storedCountryCode || "HU";
   });
+  const [radarrAvailable, setRadarrAvailable] = useState<null | boolean>(null);
 
   useEffect(() => {
     queryCountries()
@@ -52,12 +54,28 @@ const SettingsModal: React.FC<settingsModalProps> = ({show, handleClose}) => {
 
 
   const handleSave = () => {
-    setRadarrUrl(radarrUrl.replace(/\/+$/, ''));
+    const cleanedUrl = radarrUrl.replace(/\/+$/, '');
+    setRadarrUrl(cleanedUrl);
+    localStorage.setItem("radarrUrl", cleanedUrl);
     localStorage.setItem("radarrUrl", radarrUrl);
     localStorage.setItem("radarrApiKey", radarrApiKey);
     localStorage.setItem("tmdbApiKey", tmdbApiKey);
     localStorage.setItem("country", selectedCountryCode);
   };
+
+  const handleTestConnection = () => {
+    queryRadarrHealth()
+      .then(response => {
+        if (response.ok) {
+          setRadarrAvailable(true);
+        } else {
+          setRadarrAvailable(false);
+        }
+      })
+      .catch(() => {
+        setRadarrAvailable(false);
+      });
+  }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -101,6 +119,11 @@ const SettingsModal: React.FC<settingsModalProps> = ({show, handleClose}) => {
               onChange={(e) => setRadarrApiKey(e.target.value)}
               onKeyDown={handleKeyDown}
             />
+            {radarrAvailable !== null && (
+              <div className={radarrAvailable ? "text-success" : "text-danger"}>
+                {radarrAvailable ? 'Radarr is available' : 'Radarr is not available'}
+              </div>
+            )}
           </Form.Group>
           <Form.Group className="mb-3" controlId="tmdbApiKey">
             <Form.Label>TMDB API Key</Form.Label>
@@ -128,8 +151,11 @@ const SettingsModal: React.FC<settingsModalProps> = ({show, handleClose}) => {
           </Form.Group>
         </Form>
       </Modal.Body>
-      <Modal.Footer>
-        <Button className="rounded-pill" variant="primary" onClick={() => {
+      <Modal.Footer className="d-flex justify-content-between">
+        <Button className="rounded-pill ms-2" variant="outline-secondary" onClick={handleTestConnection}>
+          Test Connection
+        </Button>
+        <Button className="rounded-pill ms-2" variant="primary" onClick={() => {
           handleSave();
           handleClose();
         }}>
