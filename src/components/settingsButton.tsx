@@ -10,7 +10,7 @@ interface settingsButtonProps {
 const SettingsButton: React.FC<settingsButtonProps> = ({ onClick }) => {
   return (
     <GearWideConnected
-      size={24}
+      size={20}
       className={`${isConfigured() ? 'text-secondary' : 'text-danger'}`}
       onClick={onClick}
       style={{ cursor: 'pointer' }}
