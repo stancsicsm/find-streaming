@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 
 const useDarkMode = () => {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
@@ -19,7 +19,7 @@ const useDarkMode = () => {
     document.documentElement.setAttribute('data-bs-theme', theme);
   }, [isDarkMode]);
 
-  return {isDarkMode, toggleDarkMode};
+  return { isDarkMode, toggleDarkMode };
 };
 
 export default useDarkMode;

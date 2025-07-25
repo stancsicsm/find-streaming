@@ -1,4 +1,4 @@
-import {Provider} from "./providerInterfaces";
+import { Provider } from './providerInterfaces';
 
 interface Movie {
   id: number;
@@ -18,4 +18,4 @@ interface MoviesResponse {
   total_results: number;
 }
 
-export type { Movie, MoviesResponse }
+export type { Movie, MoviesResponse };
