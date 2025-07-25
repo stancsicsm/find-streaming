@@ -1,9 +1,9 @@
-const queryRootFolder = (apiKey?: string, url?: string) => {
-  const radarrUrl = url ?? localStorage.getItem("radarrUrl");
-  const radarrApiKey = apiKey ?? localStorage.getItem("radarrApiKey");
+const queryRootFolder = () => {
+  const radarrUrl = localStorage.getItem("radarrUrl");
+  const radarrApiKey = localStorage.getItem("radarrApiKey");
 
-  const urlToUse = `${radarrUrl}/api/v3/rootfolder?apiKey=${radarrApiKey}`;
-  return fetch(urlToUse);
+  const url = `${radarrUrl}/api/v3/rootfolder?apiKey=${radarrApiKey}`;
+  return fetch(url);
 };
 
 export default queryRootFolder;
