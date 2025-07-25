@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, Container } from 'react-bootstrap';
+import { Alert, Container} from 'react-bootstrap';
 
 import { Movie } from './interfaces/movieInterfaces';
 import { Provider, ProvidersResponse } from './interfaces/providerInterfaces';
