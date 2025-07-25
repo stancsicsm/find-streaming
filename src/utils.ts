@@ -4,10 +4,10 @@ export const isConfigured = () => {
     && localStorage.getItem('radarrUrl');
 };
 
-export const getTmdbOptions = () => ({
+export const getTmdbOptions = (apiKey?: string) => ({
   method: "GET",
   headers: {
     accept: "application/json",
-    Authorization: `Bearer ${localStorage.getItem("tmdbApiKey")}`,
+    Authorization: `Bearer ${apiKey ?? localStorage.getItem("tmdbApiKey")}`,
   },
 });
