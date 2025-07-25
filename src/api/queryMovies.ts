@@ -31,6 +31,9 @@ const queryMovies = async (
 
     moviesResponse.results.forEach((movie) => {
       if (radarrTmdbIds.has(movie.id)) {
+        if (!movie.providers) {
+          movie.providers = [];
+        }
         movie.providers.push({
           logo_path: '/radarr_logo.svg',
           provider_id: -1,
