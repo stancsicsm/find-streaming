@@ -1,21 +1,20 @@
 import React from "react";
-import {Button} from 'react-bootstrap';
 import {MoonFill, SunFill} from "react-bootstrap-icons";
 import useDarkMode from "../hooks/useDarkMode";
 
 const DarkModeToggle: React.FC = () => {
-  const { isDarkMode, toggleDarkMode } = useDarkMode();
+  const {isDarkMode, toggleDarkMode} = useDarkMode();
+
+  const IconComponent = isDarkMode ? SunFill : MoonFill;
 
   return (
-    <Button
-      variant="link"
-      size="lg"
-      className="flex-column text-secondary"
+    <IconComponent
+      size={24}
+      className="text-secondary"
       onClick={toggleDarkMode}
+      style={{cursor: 'pointer'}}
       title={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
-    >
-      {isDarkMode ? <SunFill /> : <MoonFill />}
-    </Button>
+    />
   );
 };
 
