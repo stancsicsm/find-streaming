@@ -69,7 +69,7 @@ const MoviesTable: React.FC<MoviesTableProps> = ({ movies, isLoading, emptySearc
             {movies.map((movie: Movie) => (
               <tr key={movie.id} onClick={handleShow(movie)} role="button">
                 <td>{movie.title}</td>
-                <td>{movie.release_date.split("-")[0]}</td>
+                <td>{movie.release_date?.split("-")[0]}</td>
                 <td className="text-center">{movie.vote_average.toFixed(1)}</td>
                 <td className="text-center">
                   {movie?.providers?.map((provider) => (
