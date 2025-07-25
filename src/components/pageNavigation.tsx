@@ -1,5 +1,5 @@
-import React, {useState} from "react";
-import {Row, Col, Button, ButtonGroup} from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Row, Col, Button, ButtonGroup } from 'react-bootstrap';
 
 export interface PageNavigationProps {
   filterParams: Map<string, string | number>;
@@ -8,13 +8,13 @@ export interface PageNavigationProps {
 }
 
 const PageNavigation: React.FC<PageNavigationProps> = (pageNavigationProps) => {
-  const {filterParams, setFilterParams, totalPages} = pageNavigationProps;
+  const { filterParams, setFilterParams, totalPages } = pageNavigationProps;
 
   const [page, setPage] = useState<number>(1);
 
   const updatePageInFilters = (newPage: number) => {
     const filters = new Map<string, string | number>(filterParams);
-    filters.set("page", newPage);
+    filters.set('page', newPage);
     setFilterParams(filters);
   };
 
@@ -40,7 +40,7 @@ const PageNavigation: React.FC<PageNavigationProps> = (pageNavigationProps) => {
         <ButtonGroup>
           <Button
             className="rounded-circle me-2"
-            variant={`outline-secondary ${page === 1 ? "disabled" : ""}`}
+            variant={`outline-secondary ${page === 1 ? 'disabled' : ''}`}
             onClick={previousPage}
             disabled={page === 1}
           >
@@ -48,7 +48,7 @@ const PageNavigation: React.FC<PageNavigationProps> = (pageNavigationProps) => {
           </Button>
           <Button
             className="rounded-circle"
-            variant={`outline-secondary ${page === totalPages ? "disabled" : ""}`}
+            variant={`outline-secondary ${page === totalPages ? 'disabled' : ''}`}
             onClick={nextPage}
           >
             &gt;

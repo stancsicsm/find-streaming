@@ -1,12 +1,12 @@
-import {Button, Modal, Form} from "react-bootstrap";
-import React, {useEffect, useState} from "react";
-import {Typeahead} from 'react-bootstrap-typeahead';
-import {Option} from "react-bootstrap-typeahead/types/types";
-import {CheckCircleFill, XCircleFill} from 'react-bootstrap-icons';
+import { Button, Modal, Form } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { Typeahead } from 'react-bootstrap-typeahead';
+import { Option } from 'react-bootstrap-typeahead/types/types';
+import { CheckCircleFill, XCircleFill } from 'react-bootstrap-icons';
 
-import {Country} from "../interfaces/countryInterface";
+import { Country } from '../interfaces/countryInterface';
 
-import queryCountries from "../api/queryCountries";
+import queryCountries from '../api/queryCountries';
 import queryRadarrHealth from '../api/queryRadarrHealth';
 import queryTmdbHealth from '../api/queryTmdbHealth';
 
@@ -18,24 +18,24 @@ interface settingsModalProps {
   handleClose: () => void;
 }
 
-const SettingsModal: React.FC<settingsModalProps> = ({show, handleClose}) => {
+const SettingsModal: React.FC<settingsModalProps> = ({ show, handleClose }) => {
   const [radarrUrl, setRadarrUrl] = useState<string>(() => {
-    const storedRadarrUrl = localStorage.getItem("radarrUrl");
-    return storedRadarrUrl || "";
+    const storedRadarrUrl = localStorage.getItem('radarrUrl');
+    return storedRadarrUrl || '';
   });
   const [radarrApiKey, setRadarrApiKey] = useState<string>(() => {
-    const storedRadarrApiKey = localStorage.getItem("radarrApiKey");
-    return storedRadarrApiKey || "";
+    const storedRadarrApiKey = localStorage.getItem('radarrApiKey');
+    return storedRadarrApiKey || '';
   });
   const [tmdbApiKey, setTmdbApiKey] = useState<string>(() => {
-    const storedTmdbApiKey = localStorage.getItem("tmdbApiKey");
-    return storedTmdbApiKey || "";
+    const storedTmdbApiKey = localStorage.getItem('tmdbApiKey');
+    return storedTmdbApiKey || '';
   });
   const [countryOptions, setCountryOptions] = useState<Country[]>([]);
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
   const [selectedCountryCode, setSelectedCountryCode] = useState(() => {
-    const storedCountryCode = localStorage.getItem("country");
-    return storedCountryCode || "HU";
+    const storedCountryCode = localStorage.getItem('country');
+    return storedCountryCode || 'HU';
   });
   const [radarrAvailable, setRadarrAvailable] = useState<null | boolean>(null);
   const [tmdbAvailable, setTmdbAvailable] = useState<null | boolean>(null);
@@ -46,12 +46,14 @@ const SettingsModal: React.FC<settingsModalProps> = ({show, handleClose}) => {
         setCountryOptions(countries);
       })
       .catch((error) => {
-        console.error("Error fetching countries:", error);
+        console.error('Error fetching countries:', error);
       });
   }, []);
 
   useEffect(() => {
-    const selectedCountry = countryOptions.find((country) => country.iso_3166_1 === selectedCountryCode);
+    const selectedCountry = countryOptions.find(
+      (country) => country.iso_3166_1 === selectedCountryCode,
+    );
     setSelectedCountry(selectedCountry ?? null);
   }, [countryOptions, selectedCountryCode]);
 
@@ -63,15 +65,15 @@ const SettingsModal: React.FC<settingsModalProps> = ({show, handleClose}) => {
   const handleSave = () => {
     const cleanedUrl = radarrUrl.replace(/\/+$/, '');
     setRadarrUrl(cleanedUrl);
-    localStorage.setItem("radarrUrl", cleanedUrl);
-    localStorage.setItem("radarrApiKey", radarrApiKey);
-    localStorage.setItem("tmdbApiKey", tmdbApiKey);
-    localStorage.setItem("country", selectedCountryCode);
+    localStorage.setItem('radarrUrl', cleanedUrl);
+    localStorage.setItem('radarrApiKey', radarrApiKey);
+    localStorage.setItem('tmdbApiKey', tmdbApiKey);
+    localStorage.setItem('country', selectedCountryCode);
   };
 
   const handleTestConnection = () => {
     queryRadarrHealth(radarrApiKey, radarrUrl)
-      .then(response => {
+      .then((response) => {
         if (response.ok) {
           setRadarrAvailable(true);
         } else {
@@ -83,7 +85,7 @@ const SettingsModal: React.FC<settingsModalProps> = ({show, handleClose}) => {
       });
 
     queryTmdbHealth(tmdbApiKey)
-      .then(response => {
+      .then((response) => {
         if (response.ok) {
           setTmdbAvailable(true);
         } else {
@@ -93,7 +95,7 @@ const SettingsModal: React.FC<settingsModalProps> = ({show, handleClose}) => {
       .catch(() => {
         setTmdbAvailable(false);
       });
-  }
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -158,37 +160,41 @@ const SettingsModal: React.FC<settingsModalProps> = ({show, handleClose}) => {
               defaultSelected={selectedCountry ? [selectedCountry] : []}
               clearButton
               inputProps={{
-                className: "rounded-pill focus-ring focus-ring-secondary border",
+                className: 'rounded-pill focus-ring focus-ring-secondary border',
               }}
             />
           </Form.Group>
         </Form>
 
         {radarrAvailable !== null && (
-          <div className={`d-flex align-items-center ${radarrAvailable ? "text-success" : "text-danger"}`}>
+          <div
+            className={`d-flex align-items-center ${radarrAvailable ? 'text-success' : 'text-danger'}`}
+          >
             {radarrAvailable ? (
               <>
-                <CheckCircleFill className="me-2"/>
+                <CheckCircleFill className="me-2" />
                 <span>Radarr is available</span>
               </>
             ) : (
               <>
-                <XCircleFill className="me-2"/>
+                <XCircleFill className="me-2" />
                 <span>Radarr is not available</span>
               </>
             )}
           </div>
         )}
         {tmdbAvailable !== null && (
-          <div className={`d-flex align-items-center ${tmdbAvailable ? "text-success" : "text-danger"}`}>
+          <div
+            className={`d-flex align-items-center ${tmdbAvailable ? 'text-success' : 'text-danger'}`}
+          >
             {tmdbAvailable ? (
               <>
-                <CheckCircleFill className="me-2"/>
+                <CheckCircleFill className="me-2" />
                 <span>TMDB is available</span>
               </>
             ) : (
               <>
-                <XCircleFill className="me-2"/>
+                <XCircleFill className="me-2" />
                 <span>TMDB is not available</span>
               </>
             )}
@@ -196,13 +202,21 @@ const SettingsModal: React.FC<settingsModalProps> = ({show, handleClose}) => {
         )}
       </Modal.Body>
       <Modal.Footer className="d-flex justify-content-between">
-        <Button className="rounded-pill ms-2" variant="outline-secondary" onClick={handleTestConnection}>
+        <Button
+          className="rounded-pill ms-2"
+          variant="outline-secondary"
+          onClick={handleTestConnection}
+        >
           Test Connection
         </Button>
-        <Button className="rounded-pill ms-2" variant="primary" onClick={() => {
-          handleSave();
-          handleClose();
-        }}>
+        <Button
+          className="rounded-pill ms-2"
+          variant="primary"
+          onClick={() => {
+            handleSave();
+            handleClose();
+          }}
+        >
           Save
         </Button>
       </Modal.Footer>

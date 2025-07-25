@@ -1,10 +1,10 @@
-import {TrailerResponse} from "../interfaces/trailerInterface";
-import {getTmdbOptions} from "../utils";
+import { TrailerResponse } from '../interfaces/trailerInterface';
+import { getTmdbOptions } from '../utils';
 
 const queryTrailers = (movie_id: number): Promise<TrailerResponse> => {
   return fetch(
     `https://api.themoviedb.org/3/movie/${movie_id}/videos?language=en-US`,
-    getTmdbOptions()
+    getTmdbOptions(),
   )
     .then((response) => response.json())
     .then((response) => response as TrailerResponse)

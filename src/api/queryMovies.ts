@@ -1,21 +1,20 @@
-import {MoviesResponse} from "../interfaces/movieInterfaces";
-import {getTmdbOptions} from "../utils";
+import { MoviesResponse } from '../interfaces/movieInterfaces';
+import { getTmdbOptions } from '../utils';
 
 const queryMovies = (
-  filterParams: Map<string, string | number> = new Map()
+  filterParams: Map<string, string | number> = new Map(),
 ): Promise<MoviesResponse> => {
-
   let baseUrl: string;
   const urlParams = new URLSearchParams({
-    include_adult: "false",
-    sort_by: "popularity.desc",
-    ...Object.fromEntries(filterParams.entries())
+    include_adult: 'false',
+    sort_by: 'popularity.desc',
+    ...Object.fromEntries(filterParams.entries()),
   });
 
-  if (filterParams.get("query")) {
-    baseUrl = "https://api.themoviedb.org/3/search/movie";
+  if (filterParams.get('query')) {
+    baseUrl = 'https://api.themoviedb.org/3/search/movie';
   } else {
-    baseUrl = "https://api.themoviedb.org/3/discover/movie";
+    baseUrl = 'https://api.themoviedb.org/3/discover/movie';
   }
 
   return fetch(`${baseUrl}?${urlParams.toString()}`, getTmdbOptions())
