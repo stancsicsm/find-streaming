@@ -7,6 +7,7 @@ import {Country} from "../interfaces/countryInterface";
 
 import queryCountries from "../api/queryCountries";
 import queryRadarrHealth from '../api/queryRadarrHealth';
+import queryTmdbHealth from '../api/queryTmdbHealth';
 
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import 'react-bootstrap-typeahead/css/Typeahead.bs5.css';
@@ -36,6 +37,7 @@ const SettingsModal: React.FC<settingsModalProps> = ({show, handleClose}) => {
     return storedCountryCode || "HU";
   });
   const [radarrAvailable, setRadarrAvailable] = useState<null | boolean>(null);
+  const [tmdbAvailable, setTmdbAvailable] = useState<null | boolean>(null);
 
   useEffect(() => {
     queryCountries()
@@ -74,6 +76,18 @@ const SettingsModal: React.FC<settingsModalProps> = ({show, handleClose}) => {
       })
       .catch(() => {
         setRadarrAvailable(false);
+      });
+
+    queryTmdbHealth()
+      .then(response => {
+        if (response.ok) {
+          setTmdbAvailable(true);
+        } else {
+          setTmdbAvailable(false);
+        }
+      })
+      .catch(() => {
+        setTmdbAvailable(false);
       });
   }
 
@@ -134,6 +148,11 @@ const SettingsModal: React.FC<settingsModalProps> = ({show, handleClose}) => {
               onChange={(e) => setTmdbApiKey(e.target.value)}
               onKeyDown={handleKeyDown}
             />
+            {tmdbAvailable !== null && (
+              <div className={tmdbAvailable ? "text-success" : "text-danger"}>
+                {tmdbAvailable ? 'TMDB is available' : 'TMDB is not available'}
+              </div>
+            )}
           </Form.Group>
           <Form.Group className="mb-3" controlId="countrySelector">
             <Form.Label>Streaming region</Form.Label>
