@@ -1,0 +1,15 @@
+/* Fade animation for icon changes */
+@keyframes iconFadeIn {
+  from {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+.icon-fade-in {
+  animation: iconFadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
