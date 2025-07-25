@@ -1,4 +1,4 @@
-name: ci
+name: Build & Deploy Docker Image
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  Docker:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
