@@ -1,17 +1,10 @@
 import {ProvidersResponse} from "../interfaces/providerInterfaces";
-
-const options = {
-  method: "GET",
-  headers: {
-    accept: "application/json",
-    Authorization: `Bearer ${localStorage.getItem("tmdbApiKey")}`,
-  },
-};
+import {getTmdbOptions} from "../utils";
 
 const queryProviders = (movie_id: number): Promise<ProvidersResponse> => {
   return fetch(
     `https://api.themoviedb.org/3/movie/${movie_id}/watch/providers`,
-    options
+    getTmdbOptions()
   )
     .then((response) => response.json())
     .then((response) => response as ProvidersResponse)

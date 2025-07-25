@@ -1,16 +1,10 @@
 import {Country} from "../interfaces/countryInterface";
+import {getTmdbOptions} from "../utils";
 
-const options = {
-  method: "GET",
-  headers: {
-    accept: "application/json",
-    Authorization: `Bearer ${localStorage.getItem("tmdbApiKey")}`,
-  },
-};
 const queryCountries = (): Promise<Country[]> => {
   return fetch(
     "https://api.themoviedb.org/3/configuration/countries",
-    options
+    getTmdbOptions()
   )
     .then((response) => response.json())
     .then((response) => {

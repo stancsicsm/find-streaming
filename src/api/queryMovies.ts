@@ -1,12 +1,5 @@
 import {MoviesResponse} from "../interfaces/movieInterfaces";
-
-const options = {
-  method: "GET",
-  headers: {
-    accept: "application/json",
-    Authorization: `Bearer ${localStorage.getItem("tmdbApiKey")}`,
-  },
-};
+import {getTmdbOptions} from "../utils";
 
 const queryMovies = (
   filterParams: Map<string, string | number> = new Map()
@@ -25,7 +18,7 @@ const queryMovies = (
     baseUrl = "https://api.themoviedb.org/3/discover/movie";
   }
 
-  return fetch(`${baseUrl}?${urlParams.toString()}`, options)
+  return fetch(`${baseUrl}?${urlParams.toString()}`, getTmdbOptions())
     .then((response) => response.json())
     .then((response) => response as MoviesResponse)
     .catch((err) => {
