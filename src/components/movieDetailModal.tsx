@@ -10,9 +10,15 @@ interface MovieDetailModalProps {
   show: boolean;
   handleClose: () => void;
   movie: Movie | null;
+  radarrMovies: Movie[];
 }
 
-const MovieDetailModal: React.FC<MovieDetailModalProps> = ({ show, handleClose, movie }) => {
+const MovieDetailModal: React.FC<MovieDetailModalProps> = ({
+  show,
+  handleClose,
+  movie,
+  radarrMovies,
+}) => {
   const [trailerKey, setTrailerKey] = useState<string | null>(null);
   const [radarrMessage, setRadarrMessage] = useState<{ message: string; variant: string }>({
     message: '',
