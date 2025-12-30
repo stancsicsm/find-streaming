@@ -31,7 +31,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build Docker image
-        run: docker buildx build --platform linux/arm64 -t ${{ vars.DOCKERHUB_USERNAME }}/find-streaming:latest .
+        run: docker buildx build --platform linux/amd64,linux/arm64 -t ${{ vars.DOCKERHUB_USERNAME }}/find-streaming:latest .
 
       - name: Push to Docker Hub
         run: docker push ${{ vars.DOCKERHUB_USERNAME }}/find-streaming:latest
