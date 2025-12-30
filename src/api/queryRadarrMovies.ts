@@ -1,8 +1,9 @@
 import { RadarrMovie } from '../interfaces/movieInterfaces';
+import { getConfig } from '../utils';
 
 const queryRadarrMovies = (): Promise<RadarrMovie[]> => {
-  const radarrUrl = localStorage.getItem('radarrUrl');
-  const radarrApiKey = localStorage.getItem('radarrApiKey');
+  const radarrUrl = getConfig('radarrUrl');
+  const radarrApiKey = getConfig('radarrApiKey');
 
   const url = `${radarrUrl}/api/v3/movie?apiKey=${radarrApiKey}`;
 

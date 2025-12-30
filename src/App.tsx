@@ -17,7 +17,7 @@ import queryMovies from './api/queryMovies';
 import queryProviders from './api/queryProviders';
 import queryRadarrMovies from './api/queryRadarrMovies';
 
-import { isConfigured } from './utils';
+import { getConfig, isConfigured } from './utils';
 
 const App: React.FC = () => {
   const [moviesToShow, setMoviesToShow] = useState<Movie[]>([]);
@@ -54,7 +54,7 @@ const App: React.FC = () => {
             const moviesWithProviders: Movie[] = movies.map((movie, index) => {
               const providers = providersArray[index];
               const providersForSingleMovie: Provider[] =
-                providers.results?.[localStorage.getItem('country') ?? 'HU']?.flatrate || [];
+                providers.results?.[getConfig('country') ?? '']?.flatrate || [];
 
               const movieInRadarr = radarrMovies.find(
                 (radarrMovie) => radarrMovie.tmdbId === movie.id,

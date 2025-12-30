@@ -12,6 +12,7 @@ import queryTmdbHealth from '../api/queryTmdbHealth';
 
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import 'react-bootstrap-typeahead/css/Typeahead.bs5.css';
+import { getConfig } from '../utils';
 
 interface settingsModalProps {
   show: boolean;
@@ -19,24 +20,12 @@ interface settingsModalProps {
 }
 
 const SettingsModal: React.FC<settingsModalProps> = ({ show, handleClose }) => {
-  const [radarrUrl, setRadarrUrl] = useState<string>(() => {
-    const storedRadarrUrl = localStorage.getItem('radarrUrl');
-    return storedRadarrUrl || '';
-  });
-  const [radarrApiKey, setRadarrApiKey] = useState<string>(() => {
-    const storedRadarrApiKey = localStorage.getItem('radarrApiKey');
-    return storedRadarrApiKey || '';
-  });
-  const [tmdbApiKey, setTmdbApiKey] = useState<string>(() => {
-    const storedTmdbApiKey = localStorage.getItem('tmdbApiKey');
-    return storedTmdbApiKey || '';
-  });
+  const [radarrUrl, setRadarrUrl] = useState<string>(getConfig('radarrUrl') || '');
+  const [radarrApiKey, setRadarrApiKey] = useState<string>(getConfig('radarrApiKey') || '');
+  const [tmdbApiKey, setTmdbApiKey] = useState<string>(getConfig('tmdbApiKey') || '');
   const [countryOptions, setCountryOptions] = useState<Country[]>([]);
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
-  const [selectedCountryCode, setSelectedCountryCode] = useState(() => {
-    const storedCountryCode = localStorage.getItem('country');
-    return storedCountryCode || 'HU';
-  });
+  const [selectedCountryCode, setSelectedCountryCode] = useState(getConfig('country') || '');
   const [radarrAvailable, setRadarrAvailable] = useState<null | boolean>(null);
   const [tmdbAvailable, setTmdbAvailable] = useState<null | boolean>(null);
 
