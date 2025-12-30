@@ -1,6 +1,8 @@
+import { getConfig } from '../utils';
+
 const queryRootFolder = () => {
-  const radarrUrl = localStorage.getItem('radarrUrl');
-  const radarrApiKey = localStorage.getItem('radarrApiKey');
+  const radarrUrl = getConfig('radarrUrl');
+  const radarrApiKey = getConfig('radarrApiKey');
 
   const url = `${radarrUrl}/api/v3/rootfolder?apiKey=${radarrApiKey}`;
   return fetch(url);

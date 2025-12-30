@@ -1,5 +1,6 @@
 import queryRootFolder from './queryRootFolder';
 import { RootFolder } from '../interfaces/rootFolderInterface';
+import { getConfig } from '../utils';
 
 const addMovieToRadarr = async (tmdbId: number, title: string) => {
   const rootFolderResponse = await queryRootFolder();
@@ -14,8 +15,8 @@ const addMovieToRadarr = async (tmdbId: number, title: string) => {
     throw new Error('No accessible root folder found');
   }
 
-  const radarrUrl = localStorage.getItem('radarrUrl');
-  const radarrApiKey = localStorage.getItem('radarrApiKey');
+  const radarrUrl = getConfig('radarrUrl');
+  const radarrApiKey = getConfig('radarrApiKey');
 
   const url = `${radarrUrl}/api/v3/movie?apiKey=${radarrApiKey}`;
   const body = {
