@@ -6,7 +6,8 @@ const useDarkMode = () => {
     if (savedTheme) {
       return savedTheme === 'dark';
     }
-    return document.documentElement.getAttribute('data-bs-theme') === 'dark';
+    // Default to dark when no preference is stored
+    return true;
   });
 
   const toggleDarkMode = () => {
