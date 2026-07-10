@@ -1,9 +1,7 @@
+import { Moon, Sun } from 'lucide-react';
 import type React from 'react';
 import { useState } from 'react';
-import { MoonFill, SunFill } from 'react-bootstrap-icons';
 import useDarkMode from '../hooks/useDarkMode';
-
-import '../styles/animations.css';
 
 const DarkModeToggle: React.FC = () => {
   const { isDarkMode, toggleDarkMode } = useDarkMode();
@@ -19,23 +17,22 @@ const DarkModeToggle: React.FC = () => {
     }, 150);
   };
 
-  const IconComponent = isDarkMode ? SunFill : MoonFill;
-
-  const iconStyle: React.CSSProperties = {
-    cursor: 'pointer',
-    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-    transform: showIcon ? 'rotate(0deg) scale(1)' : 'rotate(180deg) scale(1.1)',
-    opacity: showIcon ? 1 : 0,
-  };
+  const IconComponent = isDarkMode ? Sun : Moon;
 
   return (
-    <IconComponent
-      size={20}
-      className={`text-secondary ${showIcon ? 'icon-fade-in' : ''}`}
+    <button
+      type="button"
       onClick={handleToggle}
-      style={iconStyle}
+      className="rounded-full p-2.5 text-muted transition hover:bg-surface-2 hover:text-ink"
       title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-    />
+    >
+      <IconComponent
+        size={18}
+        className={`transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] ${
+          showIcon ? 'rotate-0 scale-100 opacity-100' : 'rotate-180 scale-110 opacity-0'
+        }`}
+      />
+    </button>
   );
 };
 

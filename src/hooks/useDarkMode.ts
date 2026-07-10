@@ -17,7 +17,7 @@ const useDarkMode = () => {
   useEffect(() => {
     const theme = isDarkMode ? 'dark' : 'light';
     localStorage.setItem('theme', theme);
-    document.documentElement.setAttribute('data-bs-theme', theme);
+    document.documentElement.setAttribute('data-theme', theme);
   }, [isDarkMode]);
 
   return { isDarkMode, toggleDarkMode };

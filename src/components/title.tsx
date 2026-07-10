@@ -1,8 +1,8 @@
 const Title = () => {
   return (
-    <div className="d-flex justify-content-center align-items-center my-3">
-      <img src="/logo.png" alt="logo" height="40px" className="rounded me-2" />
-      <h1 className="my-auto">Find Streaming</h1>
+    <div className="flex items-center gap-2.5">
+      <img src="/logo.png" alt="logo" className="h-9 w-9 rounded-lg" />
+      <h1 className="text-lg font-semibold tracking-tight">Find Streaming</h1>
     </div>
   );
 };

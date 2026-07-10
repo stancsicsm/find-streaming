@@ -1,5 +1,4 @@
 import type React from 'react';
-import { Col, Row } from 'react-bootstrap';
 
 interface FooterProps {
   totalPages: number;
@@ -8,15 +7,9 @@ interface FooterProps {
 
 const Footer: React.FC<FooterProps> = ({ totalPages, filterParams }) => {
   return (
-    <Row className="justify-content-md-center">
-      <Col>
-        <footer className="text-center mt-3">
-          <p>
-            {filterParams.get('page') ?? 1} / {totalPages}
-          </p>
-        </footer>
-      </Col>
-    </Row>
+    <footer className="mt-4 text-center text-sm text-muted">
+      {filterParams.get('page') ?? 1} / {totalPages}
+    </footer>
   );
 };
 
