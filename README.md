@@ -43,15 +43,15 @@ You can configure the application in three ways:
 2. **Through Environment Variables (Development)**: Create a `.env` file in the project root (you can copy `.env.example` as a starting point) and set the following variables:
 
    ```bash
-   REACT_APP_RADARR_URL=http://localhost:7878
-   REACT_APP_RADARR_API_KEY=your_radarr_api_key_here
-   REACT_APP_TMDB_API_KEY=your_tmdb_api_key_here
-   REACT_APP_COUNTRY_CODE=US
+   VITE_RADARR_URL=http://localhost:7878
+   VITE_RADARR_API_KEY=your_radarr_api_key_here
+   VITE_TMDB_API_KEY=your_tmdb_api_key_here
+   VITE_COUNTRY_CODE=US
    ```
 
-   **Note**: These `REACT_APP_` prefixed variables are embedded at **build time**. After creating or modifying the `.env` file, restart the development server for changes to take effect.
+   **Note**: These `VITE_` prefixed variables are embedded at **build time**. After creating or modifying the `.env` file, restart the development server for changes to take effect.
 
-3. **Through Environment Variables (Docker/Production)**: When running in Docker, use runtime environment variables **without** the `REACT_APP_` prefix:
+3. **Through Environment Variables (Docker/Production)**: When running in Docker, use runtime environment variables **without** the `VITE_` prefix:
 
    ```bash
    RADARR_URL=http://localhost:7878
