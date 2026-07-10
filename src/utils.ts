@@ -17,25 +17,25 @@ export const getConfig = (config: 'radarrApiKey' | 'tmdbApiKey' | 'radarrUrl' | 
       return (
         localStorage.getItem('radarrApiKey') ||
         runtimeConfig?.RADARR_API_KEY ||
-        process.env.REACT_APP_RADARR_API_KEY
+        import.meta.env.VITE_RADARR_API_KEY
       );
     case 'tmdbApiKey':
       return (
         localStorage.getItem('tmdbApiKey') ||
         runtimeConfig?.TMDB_API_KEY ||
-        process.env.REACT_APP_TMDB_API_KEY
+        import.meta.env.VITE_TMDB_API_KEY
       );
     case 'radarrUrl':
       return (
         localStorage.getItem('radarrUrl') ||
         runtimeConfig?.RADARR_URL ||
-        process.env.REACT_APP_RADARR_URL
+        import.meta.env.VITE_RADARR_URL
       );
     case 'country':
       return (
         localStorage.getItem('country') ||
         runtimeConfig?.COUNTRY_CODE ||
-        process.env.REACT_APP_COUNTRY_CODE
+        import.meta.env.VITE_COUNTRY_CODE
       );
     default:
       return null;

@@ -5,8 +5,6 @@ import { Movie } from '../interfaces/movieInterfaces';
 
 import MovieDetailModal from './movieDetailModal';
 
-import { TableLoading } from 'react-bootstrap-table-loading';
-
 interface MoviesTableProps {
   movies: Movie[];
   isLoading: boolean;
@@ -62,7 +60,17 @@ const MoviesTable: React.FC<MoviesTableProps> = ({ movies, isLoading, emptySearc
             </tr>
           </thead>
           {isLoading ? (
-            <TableLoading columns={4} lines={5} />
+            <tbody>
+              {Array.from({ length: 5 }, (_, row) => (
+                <tr key={row} className="placeholder-glow">
+                  {Array.from({ length: 4 }, (_, col) => (
+                    <td key={col}>
+                      <span className="placeholder col-8" />
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
           ) : (
             <tbody>
               {movies.map((movie: Movie) => (
