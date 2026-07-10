@@ -1,4 +1,4 @@
-import { RadarrMovie } from '../interfaces/movieInterfaces';
+import type { RadarrMovie } from '../interfaces/movieInterfaces';
 import { getConfig } from '../utils';
 
 const queryRadarrMovies = (): Promise<RadarrMovie[]> => {

@@ -16,4 +16,4 @@ interface Trailer {
   id: string;
 }
 
-export type { TrailerResponse, Trailer };
+export type { Trailer, TrailerResponse };

@@ -3,4 +3,5 @@ interface Country {
   english_name: string;
   native_name: string;
 }
+
 export type { Country };

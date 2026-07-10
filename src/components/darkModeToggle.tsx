@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import type React from 'react';
+import { useState } from 'react';
 import { MoonFill, SunFill } from 'react-bootstrap-icons';
 import useDarkMode from '../hooks/useDarkMode';
 

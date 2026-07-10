@@ -1,4 +1,4 @@
-import { Country } from '../interfaces/countryInterface';
+import type { Country } from '../interfaces/countryInterface';
 import { getTmdbOptions } from '../utils';
 
 const queryCountries = (): Promise<Country[]> => {

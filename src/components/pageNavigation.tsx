@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { Row, Col, Button, ButtonGroup } from 'react-bootstrap';
+import type React from 'react';
+import { useState } from 'react';
+import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 
 export interface PageNavigationProps {
   filterParams: Map<string, string | number>;

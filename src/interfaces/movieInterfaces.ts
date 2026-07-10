@@ -1,4 +1,4 @@
-import { Provider } from './providerInterfaces';
+import type { Provider } from './providerInterfaces';
 
 interface Movie {
   id: number;

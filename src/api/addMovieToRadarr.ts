@@ -1,6 +1,6 @@
-import queryRootFolder from './queryRootFolder';
-import { RootFolder } from '../interfaces/rootFolderInterface';
+import type { RootFolder } from '../interfaces/rootFolderInterface';
 import { getConfig } from '../utils';
+import queryRootFolder from './queryRootFolder';
 
 const addMovieToRadarr = async (tmdbId: number, title: string) => {
   const rootFolderResponse = await queryRootFolder();

@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { Row, Col, Form, Button } from 'react-bootstrap';
+import type React from 'react';
+import { useState } from 'react';
+import { Button, Col, Form, Row } from 'react-bootstrap';
 
 export interface MovieFilterProps {
   filterParams: Map<string, string | number>;

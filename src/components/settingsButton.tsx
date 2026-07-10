@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import { GearWideConnected } from 'react-bootstrap-icons';
 
 import { isConfigured } from '../utils';

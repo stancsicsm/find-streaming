@@ -1,4 +1,4 @@
-import { TrailerResponse } from '../interfaces/trailerInterface';
+import type { TrailerResponse } from '../interfaces/trailerInterface';
 import { getTmdbOptions } from '../utils';
 
 const queryTrailers = (movie_id: number): Promise<TrailerResponse> => {
