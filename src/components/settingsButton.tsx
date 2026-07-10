@@ -1,5 +1,5 @@
+import { Settings } from 'lucide-react';
 import type React from 'react';
-import { GearWideConnected } from 'react-bootstrap-icons';
 
 import { isConfigured } from '../utils';
 
@@ -9,13 +9,16 @@ interface settingsButtonProps {
 
 const SettingsButton: React.FC<settingsButtonProps> = ({ onClick }) => {
   return (
-    <GearWideConnected
-      size={20}
-      className={`${isConfigured() ? 'text-secondary' : 'text-danger'}`}
+    <button
+      type="button"
       onClick={onClick}
-      style={{ cursor: 'pointer' }}
+      className={`rounded-full p-2.5 transition hover:bg-surface-2 ${
+        isConfigured() ? 'text-muted hover:text-ink' : 'text-red-400'
+      }`}
       title="Settings"
-    />
+    >
+      <Settings size={18} />
+    </button>
   );
 };
 

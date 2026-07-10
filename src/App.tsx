@@ -1,6 +1,5 @@
 import type React from 'react';
 import { useEffect, useState } from 'react';
-import { Alert, Container } from 'react-bootstrap';
 import queryMovies from './api/queryMovies';
 import queryProviders from './api/queryProviders';
 import queryRadarrMovies from './api/queryRadarrMovies';
@@ -84,25 +83,25 @@ const App: React.FC = () => {
   }, [filterParams]);
 
   return (
-    <Container>
-      <div className="d-flex justify-content-between">
+    <div className="mx-auto max-w-lg px-4 pb-8">
+      <header className="sticky top-0 z-10 -mx-4 flex items-center justify-between bg-bg/80 px-4 py-3 backdrop-blur">
         <Title />
-        <div className="d-flex align-items-center gap-3">
+        <div className="flex items-center gap-1">
           <DarkModeToggle />
           <SettingsButton onClick={() => setShowSettings(true)} />
         </div>
-      </div>
+      </header>
       {!isConfigured() && (
-        <Alert variant="danger" dismissible>
+        <div className="mb-4 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
           Set API keys in the settings.
-        </Alert>
+        </div>
       )}
       <MovieFilter {...movieFilterProps} />
       <MoviesTable movies={moviesToShow} isLoading={isLoading} emptySearch={emptySearch} />
       {totalPages > 1 && <PageNavigation {...movieFilterProps} totalPages={totalPages} />}
       {!emptySearch && <Footer totalPages={totalPages} filterParams={filterParams} />}
       <SettingsModal show={showSettings} handleClose={() => setShowSettings(false)} />
-    </Container>
+    </div>
   );
 };
 

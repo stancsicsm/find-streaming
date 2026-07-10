@@ -1,6 +1,6 @@
+import { Search } from 'lucide-react';
 import type React from 'react';
 import { useState } from 'react';
-import { Button, Col, Form, Row } from 'react-bootstrap';
 
 export interface MovieFilterProps {
   filterParams: Map<string, string | number>;
@@ -11,10 +11,6 @@ const MovieFilter: React.FC<MovieFilterProps> = (movieFilterProps) => {
   const { filterParams, setFilterParams } = movieFilterProps;
 
   const [movieTitleSearch, setMovieTitleSearch] = useState<string>('');
-
-  const handleMovieTitleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setMovieTitleSearch(event.target.value);
-  };
 
   const applyFilters = () => {
     const filters = new Map<string, string | number>(filterParams);
@@ -28,26 +24,30 @@ const MovieFilter: React.FC<MovieFilterProps> = (movieFilterProps) => {
   };
 
   return (
-    <Row>
-      <Col className="mb-2 d-flex">
-        <Form.Control
-          className="rounded-pill me-2 focus-ring focus-ring-secondary border"
-          type="text"
-          placeholder="Movie Title"
-          value={filterParams.get('movie_title') as string}
-          onChange={handleMovieTitleSearchChange}
-          onKeyDown={(event) => {
-            if (event.key === 'Enter') {
-              event.preventDefault();
-              applyFilters();
-            }
-          }}
+    <form
+      className="mb-4 flex gap-2"
+      onSubmit={(e) => {
+        e.preventDefault();
+        applyFilters();
+      }}
+    >
+      <div className="relative flex-1">
+        <Search
+          size={16}
+          className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-muted"
         />
-        <Button className="rounded-pill" variant="outline-secondary" onClick={applyFilters}>
-          Search
-        </Button>
-      </Col>
-    </Row>
+        <input
+          type="search"
+          className="input rounded-full pl-11"
+          placeholder="Movie title"
+          value={movieTitleSearch}
+          onChange={(e) => setMovieTitleSearch(e.target.value)}
+        />
+      </div>
+      <button type="submit" className="btn btn-primary">
+        Search
+      </button>
+    </form>
   );
 };
 

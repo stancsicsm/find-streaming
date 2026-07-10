@@ -1,32 +1,38 @@
+import { CircleCheck, CircleX } from 'lucide-react';
 import type React from 'react';
-import { useEffect, useState } from 'react';
-import { Button, Form, Modal } from 'react-bootstrap';
-import { CheckCircleFill, XCircleFill } from 'react-bootstrap-icons';
-import { Typeahead } from 'react-bootstrap-typeahead';
-import type { Option } from 'react-bootstrap-typeahead/types/types';
+import { useEffect, useId, useState } from 'react';
 import queryCountries from '../api/queryCountries';
 import queryRadarrHealth from '../api/queryRadarrHealth';
 import queryTmdbHealth from '../api/queryTmdbHealth';
 import type { Country } from '../interfaces/countryInterface';
-
-import 'react-bootstrap-typeahead/css/Typeahead.css';
-import 'react-bootstrap-typeahead/css/Typeahead.bs5.css';
 import { getConfig } from '../utils';
+import Modal from './modal';
 
 interface settingsModalProps {
   show: boolean;
   handleClose: () => void;
 }
 
+const HealthStatus: React.FC<{ available: boolean; name: string }> = ({ available, name }) => (
+  <div
+    className={`flex items-center gap-2 text-sm ${available ? 'text-emerald-500' : 'text-red-400'}`}
+  >
+    {available ? <CircleCheck size={14} /> : <CircleX size={14} />}
+    <span>
+      {name} is {available ? 'available' : 'not available'}
+    </span>
+  </div>
+);
+
 const SettingsModal: React.FC<settingsModalProps> = ({ show, handleClose }) => {
   const [radarrUrl, setRadarrUrl] = useState<string>(getConfig('radarrUrl') || '');
   const [radarrApiKey, setRadarrApiKey] = useState<string>(getConfig('radarrApiKey') || '');
   const [tmdbApiKey, setTmdbApiKey] = useState<string>(getConfig('tmdbApiKey') || '');
   const [countryOptions, setCountryOptions] = useState<Country[]>([]);
-  const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
   const [selectedCountryCode, setSelectedCountryCode] = useState(getConfig('country') || '');
   const [radarrAvailable, setRadarrAvailable] = useState<null | boolean>(null);
   const [tmdbAvailable, setTmdbAvailable] = useState<null | boolean>(null);
+  const fieldId = useId();
 
   useEffect(() => {
     queryCountries()
@@ -37,13 +43,6 @@ const SettingsModal: React.FC<settingsModalProps> = ({ show, handleClose }) => {
         console.error('Error fetching countries:', error);
       });
   }, []);
-
-  useEffect(() => {
-    const selectedCountry = countryOptions.find(
-      (country) => country.iso_3166_1 === selectedCountryCode,
-    );
-    setSelectedCountry(selectedCountry ?? null);
-  }, [countryOptions, selectedCountryCode]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: show is a deliberate trigger to reset health checks when the modal opens/closes
   useEffect(() => {
@@ -63,11 +62,7 @@ const SettingsModal: React.FC<settingsModalProps> = ({ show, handleClose }) => {
   const handleTestConnection = () => {
     queryRadarrHealth(radarrApiKey, radarrUrl)
       .then((response) => {
-        if (response.ok) {
-          setRadarrAvailable(true);
-        } else {
-          setRadarrAvailable(false);
-        }
+        setRadarrAvailable(response.ok);
       })
       .catch(() => {
         setRadarrAvailable(false);
@@ -75,11 +70,7 @@ const SettingsModal: React.FC<settingsModalProps> = ({ show, handleClose }) => {
 
     queryTmdbHealth(tmdbApiKey)
       .then((response) => {
-        if (response.ok) {
-          setTmdbAvailable(true);
-        } else {
-          setTmdbAvailable(false);
-        }
+        setTmdbAvailable(response.ok);
       })
       .catch(() => {
         setTmdbAvailable(false);
@@ -93,122 +84,93 @@ const SettingsModal: React.FC<settingsModalProps> = ({ show, handleClose }) => {
     }
   };
 
-  const handleSelectCountry = (selected: Option[]) => {
-    if (selected.length > 0) {
-      const selectedOption = selected[0];
-      if (typeof selectedOption === 'object' && 'iso_3166_1' in selectedOption) {
-        setSelectedCountryCode(selectedOption.iso_3166_1);
-      }
-    }
-  };
+  const fields = [
+    {
+      label: 'Radarr URL',
+      type: 'text',
+      value: radarrUrl,
+      onChange: setRadarrUrl,
+    },
+    {
+      label: 'Radarr API Key',
+      type: 'password',
+      value: radarrApiKey,
+      onChange: setRadarrApiKey,
+    },
+    {
+      label: 'TMDB API Key',
+      type: 'password',
+      value: tmdbApiKey,
+      onChange: setTmdbApiKey,
+    },
+  ];
 
   return (
-    <Modal show={show} onHide={handleClose}>
-      <Modal.Header closeButton>
-        <Modal.Title>Settings</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <Form>
-          <Form.Group className="mb-3" controlId="radarUrl  Key">
-            <Form.Label>Radarr URL</Form.Label>
-            <Form.Control
-              type="text"
-              className="rounded-pill focus-ring focus-ring-secondary border"
-              value={radarrUrl}
-              onChange={(e) => setRadarrUrl(e.target.value)}
-              onKeyDown={handleKeyDown}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="radarrApiKey">
-            <Form.Label>Radarr API Key</Form.Label>
-            <Form.Control
-              type="password"
-              className="rounded-pill focus-ring focus-ring-secondary border"
-              value={radarrApiKey}
-              onChange={(e) => setRadarrApiKey(e.target.value)}
-              onKeyDown={handleKeyDown}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="tmdbApiKey">
-            <Form.Label>TMDB API Key</Form.Label>
-            <Form.Control
-              type="password"
-              className="rounded-pill focus-ring focus-ring-secondary border"
-              value={tmdbApiKey}
-              onChange={(e) => setTmdbApiKey(e.target.value)}
-              onKeyDown={handleKeyDown}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="countrySelector">
-            <Form.Label>Streaming region</Form.Label>
-            <Typeahead
-              id="countrySelector"
-              labelKey="english_name"
-              onChange={handleSelectCountry}
-              options={countryOptions}
-              defaultSelected={selectedCountry ? [selectedCountry] : []}
-              clearButton
-              inputProps={{
-                className: 'rounded-pill focus-ring focus-ring-secondary border',
-              }}
-            />
-          </Form.Group>
-        </Form>
-
-        {radarrAvailable !== null && (
-          <div
-            className={`d-flex align-items-center ${radarrAvailable ? 'text-success' : 'text-danger'}`}
+    <Modal
+      show={show}
+      onClose={handleClose}
+      title="Settings"
+      footer={
+        <>
+          <button type="button" className="btn btn-ghost" onClick={handleTestConnection}>
+            Test Connection
+          </button>
+          <button
+            type="button"
+            className="btn btn-primary ml-auto"
+            onClick={() => {
+              handleSave();
+              handleClose();
+            }}
           >
-            {radarrAvailable ? (
-              <>
-                <CheckCircleFill className="me-2" />
-                <span>Radarr is available</span>
-              </>
-            ) : (
-              <>
-                <XCircleFill className="me-2" />
-                <span>Radarr is not available</span>
-              </>
-            )}
+            Save
+          </button>
+        </>
+      }
+    >
+      <div className="space-y-4">
+        {fields.map((field) => (
+          <div key={field.label}>
+            <label
+              htmlFor={`${fieldId}-${field.label}`}
+              className="mb-1.5 block text-sm font-medium text-muted"
+            >
+              {field.label}
+            </label>
+            <input
+              id={`${fieldId}-${field.label}`}
+              type={field.type}
+              className="input"
+              value={field.value}
+              onChange={(e) => field.onChange(e.target.value)}
+              onKeyDown={handleKeyDown}
+            />
           </div>
-        )}
-        {tmdbAvailable !== null && (
-          <div
-            className={`d-flex align-items-center ${tmdbAvailable ? 'text-success' : 'text-danger'}`}
+        ))}
+        <div>
+          <label
+            htmlFor={`${fieldId}-country`}
+            className="mb-1.5 block text-sm font-medium text-muted"
           >
-            {tmdbAvailable ? (
-              <>
-                <CheckCircleFill className="me-2" />
-                <span>TMDB is available</span>
-              </>
-            ) : (
-              <>
-                <XCircleFill className="me-2" />
-                <span>TMDB is not available</span>
-              </>
-            )}
-          </div>
-        )}
-      </Modal.Body>
-      <Modal.Footer className="d-flex justify-content-between">
-        <Button
-          className="rounded-pill ms-2"
-          variant="outline-secondary"
-          onClick={handleTestConnection}
-        >
-          Test Connection
-        </Button>
-        <Button
-          className="rounded-pill ms-2"
-          variant="primary"
-          onClick={() => {
-            handleSave();
-            handleClose();
-          }}
-        >
-          Save
-        </Button>
-      </Modal.Footer>
+            Streaming region
+          </label>
+          <select
+            id={`${fieldId}-country`}
+            className="input appearance-none"
+            value={selectedCountryCode}
+            onChange={(e) => setSelectedCountryCode(e.target.value)}
+          >
+            <option value="">Select a country</option>
+            {countryOptions.map((country) => (
+              <option key={country.iso_3166_1} value={country.iso_3166_1}>
+                {country.english_name}
+              </option>
+            ))}
+          </select>
+        </div>
+        {radarrAvailable !== null && <HealthStatus available={radarrAvailable} name="Radarr" />}
+        {tmdbAvailable !== null && <HealthStatus available={tmdbAvailable} name="TMDB" />}
+      </div>
     </Modal>
   );
 };

@@ -1,6 +1,6 @@
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type React from 'react';
 import { useState } from 'react';
-import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 
 export interface PageNavigationProps {
   filterParams: Map<string, string | number>;
@@ -36,27 +36,26 @@ const PageNavigation: React.FC<PageNavigationProps> = (pageNavigationProps) => {
   };
 
   return (
-    <Row className="mb-2">
-      <Col className="d-flex justify-content-end">
-        <ButtonGroup>
-          <Button
-            className="rounded-circle me-2"
-            variant={`outline-secondary ${page === 1 ? 'disabled' : ''}`}
-            onClick={previousPage}
-            disabled={page === 1}
-          >
-            &lt;
-          </Button>
-          <Button
-            className="rounded-circle"
-            variant={`outline-secondary ${page === totalPages ? 'disabled' : ''}`}
-            onClick={nextPage}
-          >
-            &gt;
-          </Button>
-        </ButtonGroup>
-      </Col>
-    </Row>
+    <nav className="mt-4 flex items-center justify-center gap-3">
+      <button
+        type="button"
+        className="btn btn-ghost h-11 w-11 p-0"
+        onClick={previousPage}
+        disabled={page === 1}
+        aria-label="Previous page"
+      >
+        <ChevronLeft size={16} />
+      </button>
+      <button
+        type="button"
+        className="btn btn-ghost h-11 w-11 p-0"
+        onClick={nextPage}
+        disabled={page === totalPages}
+        aria-label="Next page"
+      >
+        <ChevronRight size={16} />
+      </button>
+    </nav>
   );
 };
 
