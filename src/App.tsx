@@ -1,13 +1,11 @@
 import type React from 'react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import queryMovies from './api/queryMovies';
 import queryProviders from './api/queryProviders';
 import queryRadarrMovies from './api/queryRadarrMovies';
 import DarkModeToggle from './components/darkModeToggle';
-import Footer from './components/footer';
 import MovieFilter from './components/movieFilter';
 import MoviesTable from './components/moviesTable';
-import PageNavigation from './components/pageNavigation';
 import SettingsButton from './components/settingsButton';
 import SettingsModal from './components/settingsModal';
 import Title from './components/title';
@@ -22,22 +20,38 @@ const App: React.FC = () => {
   const [emptySearch, setEmptySearch] = useState<boolean>(true);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+
+  const page = Number(filterParams.get('page') ?? 1);
+  const hasMore = page < totalPages;
 
   const movieFilterProps = {
     filterParams: filterParams,
     setFilterParams: setFilterParams,
   };
 
+  const loadMore = useCallback(() => {
+    if (isLoading || isLoadingMore || !hasMore) return;
+    setFilterParams((prev) => {
+      const filters = new Map(prev);
+      filters.set('page', Number(prev.get('page') ?? 1) + 1);
+      return filters;
+    });
+  }, [isLoading, isLoadingMore, hasMore]);
+
   useEffect(() => {
-    setIsLoading(true);
     if (!filterParams.get('query')) {
       setEmptySearch(true);
-      setIsLoading(false);
       return;
-    } else {
-      setEmptySearch(false);
     }
+    setEmptySearch(false);
+
+    const currentPage = Number(filterParams.get('page') ?? 1);
+    const initial = currentPage === 1;
+    const setLoading = initial ? setIsLoading : setIsLoadingMore;
+    setLoading(true);
+    let cancelled = false;
 
     queryMovies(filterParams)
       .then((moviesResponse) => {
@@ -68,18 +82,31 @@ const App: React.FC = () => {
 
               return { ...movie, providers: providersForSingleMovie };
             });
-            setMoviesToShow(moviesWithProviders);
-            setIsLoading(false);
+            if (cancelled) return;
+            setMoviesToShow((prev) =>
+              initial
+                ? moviesWithProviders
+                : // TMDB occasionally repeats movies across pages; drop duplicates to keep keys unique
+                  [
+                    ...prev,
+                    ...moviesWithProviders.filter((movie) => !prev.some((p) => p.id === movie.id)),
+                  ],
+            );
+            setLoading(false);
           })
           .catch((error) => {
             console.error('Error fetching providers or Radarr movies:', error);
-            setIsLoading(false);
+            setLoading(false);
           });
       })
       .catch((error) => {
         console.error('Error fetching movies:', error);
-        setIsLoading(false);
+        setLoading(false);
       });
+
+    return () => {
+      cancelled = true;
+    };
   }, [filterParams]);
 
   return (
@@ -97,9 +124,14 @@ const App: React.FC = () => {
         </div>
       )}
       <MovieFilter {...movieFilterProps} />
-      <MoviesTable movies={moviesToShow} isLoading={isLoading} emptySearch={emptySearch} />
-      {totalPages > 1 && <PageNavigation {...movieFilterProps} totalPages={totalPages} />}
-      {!emptySearch && <Footer totalPages={totalPages} filterParams={filterParams} />}
+      <MoviesTable
+        movies={moviesToShow}
+        isLoading={isLoading}
+        emptySearch={emptySearch}
+        onLoadMore={loadMore}
+        hasMore={hasMore}
+        isLoadingMore={isLoadingMore}
+      />
       <SettingsModal show={showSettings} handleClose={() => setShowSettings(false)} />
     </div>
   );

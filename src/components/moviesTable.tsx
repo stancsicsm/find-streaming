@@ -1,6 +1,6 @@
 import { Film, Star } from 'lucide-react';
 import type React from 'react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import type { Movie } from '../interfaces/movieInterfaces';
 import type { Provider } from '../interfaces/providerInterfaces';
@@ -11,22 +11,56 @@ interface MoviesTableProps {
   movies: Movie[];
   isLoading: boolean;
   emptySearch: boolean;
+  onLoadMore: () => void;
+  hasMore: boolean;
+  isLoadingMore: boolean;
 }
+
+const PAGE_SIZE = 20;
 
 const providerLogoSrc = (provider: Provider) =>
   provider.provider_name === 'Radarr'
     ? '/radarrLogo.svg'
     : `https://image.tmdb.org/t/p/original${provider.logo_path}`;
 
-const MoviesTable: React.FC<MoviesTableProps> = ({ movies, isLoading, emptySearch }) => {
+const SkeletonCard = () => (
+  <li className="animate-pulse rounded-xl border border-line bg-surface p-4">
+    <div className="h-4 w-2/3 rounded bg-surface-2" />
+    <div className="mt-2.5 h-3 w-1/3 rounded bg-surface-2" />
+  </li>
+);
+
+const MoviesTable: React.FC<MoviesTableProps> = ({
+  movies,
+  isLoading,
+  emptySearch,
+  onLoadMore,
+  hasMore,
+  isLoadingMore,
+}) => {
   const [show, setShow] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
+  const sentinelRef = useRef<HTMLDivElement>(null);
 
   const handleClose = () => setShow(false);
   const handleShow = (movie: Movie) => () => {
     setSelectedMovie(movie);
     setShow(true);
   };
+
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel || !hasMore) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) onLoadMore();
+      },
+      // start fetching well before the user reaches the bottom
+      { rootMargin: '400px' },
+    );
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [hasMore, onLoadMore]);
 
   if (emptySearch) {
     return (
@@ -42,10 +76,7 @@ const MoviesTable: React.FC<MoviesTableProps> = ({ movies, isLoading, emptySearc
       <ul className="space-y-2">
         {Array.from({ length: 5 }, (_, row) => (
           // biome-ignore lint/suspicious/noArrayIndexKey: static skeleton rows never reorder
-          <li key={row} className="animate-pulse rounded-xl border border-line bg-surface p-4">
-            <div className="h-4 w-2/3 rounded bg-surface-2" />
-            <div className="mt-2.5 h-3 w-1/3 rounded bg-surface-2" />
-          </li>
+          <SkeletonCard key={row} />
         ))}
       </ul>
     );
@@ -58,7 +89,7 @@ const MoviesTable: React.FC<MoviesTableProps> = ({ movies, isLoading, emptySearc
           <li
             key={movie.id}
             className="animate-fade-up"
-            style={{ animationDelay: `${index * 40}ms` }}
+            style={{ animationDelay: `${(index % PAGE_SIZE) * 40}ms` }}
           >
             <button
               type="button"
@@ -93,7 +124,14 @@ const MoviesTable: React.FC<MoviesTableProps> = ({ movies, isLoading, emptySearc
             </button>
           </li>
         ))}
+        {isLoadingMore && (
+          <>
+            <SkeletonCard />
+            <SkeletonCard />
+          </>
+        )}
       </ul>
+      <div ref={sentinelRef} aria-hidden />
       <MovieDetailModal show={show} handleClose={handleClose} movie={selectedMovie} />
     </>
   );
