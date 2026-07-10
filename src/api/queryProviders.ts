@@ -1,4 +1,4 @@
-import { ProvidersResponse } from '../interfaces/providerInterfaces';
+import type { ProvidersResponse } from '../interfaces/providerInterfaces';
 import { getTmdbOptions } from '../utils';
 
 const queryProviders = (movie_id: number): Promise<ProvidersResponse> => {

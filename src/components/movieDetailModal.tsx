@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Modal, Alert, Spinner } from 'react-bootstrap';
-
-import { Movie } from '../interfaces/movieInterfaces';
+import type React from 'react';
+import { useEffect, useState } from 'react';
+import { Alert, Button, Modal, Spinner } from 'react-bootstrap';
+import addMovieToRadarr from '../api/addMovieToRadarr';
 
 import queryTrailers from '../api/queryTrailers';
-import addMovieToRadarr from '../api/addMovieToRadarr';
+import type { Movie } from '../interfaces/movieInterfaces';
 
 interface MovieDetailModalProps {
   show: boolean;
@@ -20,6 +20,7 @@ const MovieDetailModal: React.FC<MovieDetailModalProps> = ({ show, handleClose, 
   });
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: show is a deliberate trigger to reset the message when the modal opens/closes
   useEffect(() => {
     setRadarrMessage({ message: '', variant: '' });
   }, [show]);

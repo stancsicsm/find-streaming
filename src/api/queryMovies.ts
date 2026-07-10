@@ -1,4 +1,4 @@
-import { MoviesResponse } from '../interfaces/movieInterfaces';
+import type { MoviesResponse } from '../interfaces/movieInterfaces';
 import { getTmdbOptions } from '../utils';
 
 const queryMovies = (

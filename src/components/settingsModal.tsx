@@ -1,14 +1,13 @@
-import { Button, Modal, Form } from 'react-bootstrap';
-import React, { useEffect, useState } from 'react';
-import { Typeahead } from 'react-bootstrap-typeahead';
-import { Option } from 'react-bootstrap-typeahead/types/types';
+import type React from 'react';
+import { useEffect, useState } from 'react';
+import { Button, Form, Modal } from 'react-bootstrap';
 import { CheckCircleFill, XCircleFill } from 'react-bootstrap-icons';
-
-import { Country } from '../interfaces/countryInterface';
-
+import { Typeahead } from 'react-bootstrap-typeahead';
+import type { Option } from 'react-bootstrap-typeahead/types/types';
 import queryCountries from '../api/queryCountries';
 import queryRadarrHealth from '../api/queryRadarrHealth';
 import queryTmdbHealth from '../api/queryTmdbHealth';
+import type { Country } from '../interfaces/countryInterface';
 
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import 'react-bootstrap-typeahead/css/Typeahead.bs5.css';
@@ -46,6 +45,7 @@ const SettingsModal: React.FC<settingsModalProps> = ({ show, handleClose }) => {
     setSelectedCountry(selectedCountry ?? null);
   }, [countryOptions, selectedCountryCode]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: show is a deliberate trigger to reset health checks when the modal opens/closes
   useEffect(() => {
     setRadarrAvailable(null);
     setTmdbAvailable(null);

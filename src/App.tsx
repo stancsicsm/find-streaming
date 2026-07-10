@@ -1,21 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 import { Alert, Container } from 'react-bootstrap';
-
-import { Movie, RadarrMovie } from './interfaces/movieInterfaces';
-import { Provider, ProvidersResponse } from './interfaces/providerInterfaces';
-
-import Title from './components/title';
-import Footer from './components/footer';
-import MoviesTable from './components/moviesTable';
-import MovieFilter from './components/movieFilter';
-import PageNavigation from './components/pageNavigation';
-import SettingsModal from './components/settingsModal';
-import SettingsButton from './components/settingsButton';
-import DarkModeToggle from './components/darkModeToggle';
-
 import queryMovies from './api/queryMovies';
 import queryProviders from './api/queryProviders';
 import queryRadarrMovies from './api/queryRadarrMovies';
+import DarkModeToggle from './components/darkModeToggle';
+import Footer from './components/footer';
+import MovieFilter from './components/movieFilter';
+import MoviesTable from './components/moviesTable';
+import PageNavigation from './components/pageNavigation';
+import SettingsButton from './components/settingsButton';
+import SettingsModal from './components/settingsModal';
+import Title from './components/title';
+import type { Movie, RadarrMovie } from './interfaces/movieInterfaces';
+import type { Provider, ProvidersResponse } from './interfaces/providerInterfaces';
 
 import { getConfig, isConfigured } from './utils';
 

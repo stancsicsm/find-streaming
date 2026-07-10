@@ -1,5 +1,5 @@
-import React from 'react';
-import { Row, Col } from 'react-bootstrap';
+import type React from 'react';
+import { Col, Row } from 'react-bootstrap';
 
 interface FooterProps {
   totalPages: number;

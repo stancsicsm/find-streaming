@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { Row, Col, Table } from 'react-bootstrap';
+import type React from 'react';
+import { useState } from 'react';
+import { Col, Row, Table } from 'react-bootstrap';
 
-import { Movie } from '../interfaces/movieInterfaces';
+import type { Movie } from '../interfaces/movieInterfaces';
 
 import MovieDetailModal from './movieDetailModal';
 
@@ -62,8 +63,10 @@ const MoviesTable: React.FC<MoviesTableProps> = ({ movies, isLoading, emptySearc
           {isLoading ? (
             <tbody>
               {Array.from({ length: 5 }, (_, row) => (
+                // biome-ignore lint/suspicious/noArrayIndexKey: static skeleton rows never reorder
                 <tr key={row} className="placeholder-glow">
                   {Array.from({ length: 4 }, (_, col) => (
+                    // biome-ignore lint/suspicious/noArrayIndexKey: static skeleton cells never reorder
                     <td key={col}>
                       <span className="placeholder col-8" />
                     </td>
@@ -74,6 +77,7 @@ const MoviesTable: React.FC<MoviesTableProps> = ({ movies, isLoading, emptySearc
           ) : (
             <tbody>
               {movies.map((movie: Movie) => (
+                // biome-ignore lint/a11y/useSemanticElements: a <button> is not valid inside <tbody>; role marks the row clickable
                 <tr key={movie.id} onClick={handleShow(movie)} role="button">
                   <td>{movie.title}</td>
                   <td>{movie.release_date?.split('-')[0]}</td>

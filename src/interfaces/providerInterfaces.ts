@@ -17,4 +17,4 @@ interface ProvidersResponse {
   };
 }
 
-export type { Provider, CountryProviders, ProvidersResponse };
+export type { CountryProviders, Provider, ProvidersResponse };
