@@ -113,11 +113,14 @@ const SettingsModal: React.FC<settingsModalProps> = ({ show, handleClose }) => {
       footer={
         <>
           <button type="button" className="btn btn-ghost" onClick={handleTestConnection}>
-            Test Connection
+            Test
+          </button>
+          <button type="button" className="btn btn-ghost ml-auto" onClick={handleClose}>
+            Cancel
           </button>
           <button
             type="button"
-            className="btn btn-primary ml-auto"
+            className="btn btn-primary"
             onClick={() => {
               handleSave();
               handleClose();
